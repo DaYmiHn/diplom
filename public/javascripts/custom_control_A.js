@@ -1,9 +1,9 @@
 ymaps.ready(function () {
     // Пример реализации собственного элемента управления на основе наследования от collection.Item.
     // Элемент управления отображает название объекта, который находится в центре карты.
-    var map = new ymaps.Map("map", {
-                center: [55.819543, 37.611619],
-                zoom: 6,
+    var map = new ymaps.Map("map_A", {
+                center: [59.938434, 30.315635],
+                zoom: 10,
                 controls: []
             }
         ),
@@ -69,6 +69,7 @@ ymaps.ready(function () {
 
     var customControl = new CustomControlClass();
     map.controls.add(customControl, {
+        id : "A",
         float: 'none',
         position: {
             top: 10,
