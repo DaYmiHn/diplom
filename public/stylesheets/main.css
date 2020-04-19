@@ -232,17 +232,45 @@ fieldset {
 }
 
 
-#app > div:nth-child(1) > div.panel-body > div > fieldset > div:nth-child(9) > div.field-wrap > div.buttons > button.btn-allow{
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(9) > div.field-wrap > div.buttons > button.btn-allow{
     display: none;
 }
-#app > div:nth-child(1) > div.panel-body > div > fieldset > div:nth-child(10) > div > div.buttons > button.btn-allow{
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(10) > div > div.buttons > button.btn-allow{
     display: none;
 }
 
 
 
-#app > div:nth-child(1) > div.panel-body > div > div{
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 15px;
+}
+
+
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(9),
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(10)
+/*#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(11),*/
+/*#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:last-child*/
+{
+    grid-column: span 2;
+}
+
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div.form-group.valid.field-dateTimePicker > div > div{
+    width: 100%;
+}
+
+
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(11) > div > div > input:hover{
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div.form-group.valid.field-switch > div > label{
+    margin: 10px auto;
+}
+
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div.form-group.valid.field-submit > div > input[type=submit]{
+    width: 100%;
 }

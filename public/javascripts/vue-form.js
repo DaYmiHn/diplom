@@ -22,14 +22,6 @@ var vm = new Vue({
                 fields: [{
                     type: "input",
                     inputType: "text",
-                    label: "Номер посылки",
-                    model: "id",
-                    readonly: true,
-                    featured: false,
-                    disabled: true
-                }, {
-                    type: "input",
-                    inputType: "text",
                     label: "Ваше имя 😺",
                     model: "name",
                     readonly: false,
@@ -94,6 +86,17 @@ var vm = new Vue({
                         "Некурящий курьер 🚭",
                         "Курьер с чувством юмора 🤡"
                     ]
+                },{
+                    type: "switch",
+                    label: "Согласны ли вы с правилами доставки?",
+                    model: "rules",
+                    multi: true,
+                    readonly: false,
+                    featured: false,
+                    disabled: false,
+                    default: true,
+                    textOn: "Да, конечно",
+                    textOff: "Нет, спасибо"
                 }, {
                     type: "input",
                     inputType: "text",
@@ -205,16 +208,16 @@ var vm = new Vue({
                         }
                     ]
                 },{
-                    type: "switch",
-                    label: "Согласны ли вы с правилами доставки?",
-                    model: "rules",
-                    multi: true,
-                    readonly: false,
-                    featured: false,
-                    disabled: false,
-                    default: true,
-                    textOn: "Да, конечно",
-                    textOff: "Нет, спасибо"
+                    type: "label",
+                    label: "Цена:",
+                    model: "cost",
+                    get: function(model) { 
+                        return model.ves ? model.ves*2+" руб." : "Минимально 100 руб.";
+                      // return model && model.created ? moment(model.created).format("LLL") : "-"; 
+                    }
+                },{
+                    type: "submit",
+                    buttonText: "Оформить заказ"
                 }]
             },
 
