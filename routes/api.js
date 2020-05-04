@@ -15,11 +15,7 @@ router.get('/add/package/', function(req, res, next) {
 			console.log(row.id + ': ' + row.name);
 		});
 	});
-
-
-
 	res.send('успешно добавлено');
-	// res.render('index', { name: req.params['name'] });
 });
 
 
