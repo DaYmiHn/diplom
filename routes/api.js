@@ -2,31 +2,13 @@ var express = require('express');
 var router = express.Router();
 
 
-var sqlite3 = require('sqlite3').verbose();
+var sqlite3 = require('sqlite3');
 var db = new sqlite3.Database('database.db');
 
-
-// /* GET home page. */
-// router.get('/add/package/', function(req, res, next) {
-// 	db.serialize(function() {
-// 		db.run("INSERT INTO `package` (id,name,email,address_A,address_B,cost,options,startTime,fast) VALUES (NULL,'1','1','123','23',23,'kuj','324','234');");
-
-// 		db.each('SELECT * FROM `package`', function(err, row) {
-// 			console.log(row.id + ': ' + row.name);
-// 		});
-// 	});
-// 	res.send('успешно добавлено');
-// });
-
-
-
-
-
-
+//==========================================PACKAGE====================================================
 
 router.route('/package/:id')
 	.get(function(req, res) {
-		// console.log('SELECT * FROM `package` WHERE `id` = '+req.params.id);
 		db.each('SELECT * FROM `package` WHERE `id` = '+req.params.id, (err, row)=> {
 			console.log(row.address_A);
     		res.send(row); 
@@ -43,18 +25,27 @@ router.route('/package/:id')
 		res.send('Delete the book');
 	});
 
-
-router.route('/user/:id')
+//==========================================USER====================================================
+router.route('/user/:id*?')
 	.get(function(req, res) {
-		// console.log('SELECT * FROM `package` WHERE `id` = '+req.params.id);
-		db.each('SELECT * FROM `package` WHERE `id` = '+req.params.id, (err, row)=> {
-			console.log(row.address_A);
-    		res.send(row); 
-		});
+		if (!req.params.id) {
+			db.each(`SELECT * FROM user WHERE log = '${req.query.log}' AND pas = '${req.query.pas}'`, function(err, row) {
+				res.cookie('auth', 'true' );
+				res.cookie('id',  row.id);
+	  			res.send('document.location.reload(true);');
+			}, function(err, rows) {
+				if (rows == 0) {
+					res.send('alert("Неправильный логин или пароль!");');
+				}
+			});
+		}
   	})
 	.post(function(req, res) {
-		db.run("INSERT INTO `package` (id,name,email,address_A,address_B,cost,options,startTime,fast) VALUES (NULL,'1','1','123','23',23,'kuj','324','234');");
-		res.send('Add a book');
+		console.log(`INSERT INTO 'user' (log,pas) VALUES ('${req.body.log}','${req.body.pas}');`);
+		db.run(`INSERT INTO 'user' (log,pas) VALUES ('${req.body.log}','${req.body.pas}');`, function(err, row) {
+	  			if (!err){res.cookie('auth', 'true' ); res.send('document.location.reload(true);');}
+				else res.send("alert('Логин уже есть');");
+			});
 	})
 	.put(function(req, res) {
 		res.send('Update the book');
@@ -63,10 +54,6 @@ router.route('/user/:id')
 		res.send('Delete the book');
 	});
 
-
-
-
-
-
+//================================================================================================
 module.exports = router;
 	// db.close(); 

@@ -47,12 +47,15 @@ block content
 
           <div class="ya_map_A" id="A">
             <br>
-            <div class="center_point_map"></div>
-            <div id="map_A"></div>
+            //- <div class="center_point_map"></div>
+            |Координаты маркера: <div id="location">LatLng(54.98, 82.89)</div>
+            //- <div id="map_A"></div>
+            <div id="map_A" ></div>
           </div>
             <div class="ya_map_B" id="B">
                 <br>
                 <div class="center_point_map"></div>
+
                 <div id="map_B"></div>
                 <div id="map_ras" style="display: none;"></div>
             </div>
@@ -62,32 +65,13 @@ block content
 
 
     <section id="shop" class="overflow sec_block">
-      <div class="shop_block">
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-        <div class="block_shop_item overflow"></div>
-      </div>
+        <div class="shop_block">
+            each shop in shops
+                <div class="block_shop_item overflow">
+                |#{shop.name}
+                </div>
+
+        </div>
     </section>
 
 
@@ -106,3 +90,27 @@ block content
       <div class="bg-grad five"></div>
       <div class="bg-grad six"></div>
     </div>
+
+    script.
+        var locationInfo = document.getElementById('location');
+
+              DG.then(function () {
+                  var map,
+                      marker;
+
+                  map = DG.map('map_A', {
+                      center: [54.981, 82.891],
+                      zoom: 15
+                  });
+
+                  marker = DG.marker([54.981, 82.891], {
+                      draggable: true
+                  }).addTo(map);
+
+                  marker.on('drag', function(e) {
+                      var lat = e.target._latlng.lat.toFixed(3),
+                          lng = e.target._latlng.lng.toFixed(3);
+                      console.log(lat + ", "+lng);
+                      locationInfo.innerHTML = lat + ', ' + lng;
+                  });
+              });

@@ -5,12 +5,16 @@
     <title>🏵Курьерская служба🏵</title>
     link(rel='stylesheet', href='/stylesheets/main.css')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=d40fb052-95ef-400a-b9ad-d8e14749a9be&load=package.full" type="text/javascript"></script>
-    script(src="/javascripts/custom_control_A.js")
-    script(src="/javascripts/custom_control_B.js")
+    <script src="https://maps.api.2gis.ru/2.0/loader.js"></script>
+    //- <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=d40fb052-95ef-400a-b9ad-d8e14749a9be&load=package.full" type="text/javascript"></script>
+    //- script(src="/javascripts/custom_control_A.js")
+    //- script(src="/javascripts/custom_control_B.js")
     script(src="/javascripts/vfg.js")
     script(src="/javascripts/jquery.mask.js")
+    script(src="/javascripts/jquery.suggestions.min.js")
+    //- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/css/suggestions.min.css" rel="stylesheet" />
+    //- <script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js"></script>
 
 
 
@@ -19,9 +23,20 @@
 </head>
 <body>
     block content
+
     script(src="/javascripts/main.js")
     script(src="/javascripts/vue-form.js")
-    //- <script src="http://beloweb.ru/demo/prokrutka/jquery.mCustomScrollbar.concat.min.js"></script>
+//- <input id="address" name="address" type="text" />
 
+script.
+    $("#address").suggestions({
+        token: "2a590f083f301abfa0b8b944b982bf15b2d5d5a6",
+        type: "ADDRESS",
+        /* Вызывается, когда пользователь выбирает одну из подсказок */
+        onSelect: function(suggestion) {
+            console.log(suggestion);
+        }
+    });
+</script>
 </body>
 </html>

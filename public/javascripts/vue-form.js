@@ -9,57 +9,57 @@ let summ = {
   total: 0     
 };
 
-let rast = setInterval( function() { 
-    ymaps.ready(function () {
-    var multiRoute = new ymaps.multiRouter.MultiRoute({
-        referencePoints: [vm.model.address_A,
-      vm.model.address_B],
-        params: {
-            routingMode: 'masstransit',
-            results: "1"
-        }
-    }, {
-        boundsAutoApply: false
-    });
+// let rast = setInterval( function() { 
+//     ymaps.ready(function () {
+//     var multiRoute = new ymaps.multiRouter.MultiRoute({
+//         referencePoints: [vm.model.address_A,
+//       vm.model.address_B],
+//         params: {
+//             routingMode: 'masstransit',
+//             results: "1"
+//         }
+//     }, {
+//         boundsAutoApply: false
+//     });
 
-    var changeLayoutButton = new ymaps.control.Button({
-        data: { content: "Изменить макет подписи для пеших сегментов"},
-        options: { selectOnClick: true }
-    });
+//     var changeLayoutButton = new ymaps.control.Button({
+//         data: { content: "Изменить макет подписи для пеших сегментов"},
+//         options: { selectOnClick: true }
+//     });
 
-    changeLayoutButton.events.add('select', function () {
-        multiRoute.options.set(
-            "routeWalkMarkerIconContentLayout",
-            ymaps.templateLayoutFactory.createClass('{{ properties.duration.text }}')
-        );
-    });
+//     changeLayoutButton.events.add('select', function () {
+//         multiRoute.options.set(
+//             "routeWalkMarkerIconContentLayout",
+//             ymaps.templateLayoutFactory.createClass('{{ properties.duration.text }}')
+//         );
+//     });
 
-    changeLayoutButton.events.add('deselect', function () {
-        multiRoute.options.unset("routeWalkMarkerIconContentLayout");
-    });
+//     changeLayoutButton.events.add('deselect', function () {
+//         multiRoute.options.unset("routeWalkMarkerIconContentLayout");
+//     });
 
-    var myMap = new ymaps.Map('map_A', {
-        center: [59.940664, 30.316987],
-        zoom: 12,
-        controls: [changeLayoutButton]
-    }, {
-        buttonMaxWidth: 350
-    });
+//     var myMap = new ymaps.Map('map_A', {
+//         center: [59.940664, 30.316987],
+//         zoom: 12,
+//         controls: [changeLayoutButton]
+//     }, {
+//         buttonMaxWidth: 350
+//     });
 
-    myMap.geoObjects.add(multiRoute);
-    // var geoBounds = new YMaps.GeoCollectionBounds(); 
+//     myMap.geoObjects.add(multiRoute);
+//     // var geoBounds = new YMaps.GeoCollectionBounds(); 
 
-    multiRoute.model.events.add("requestsuccess", function() {
+//     multiRoute.model.events.add("requestsuccess", function() {
 
-    myMap.setBounds(multiRoute.getBounds(),true);
-    // var sred = multiRoute.getRoutes().get(0).properties.get("durationInTraffic").value + multiRoute.getRoutes().get(0).properties.get("duration").value
-    // setTimeout(raschet, 3000, multiRoute.getRoutes().get(0).properties.get('distance').value, sred/2);
-    var rasKm = Math.round(multiRoute.getRoutes().get(0).properties.get('distance').value/1000); //в метрах // км
-    var durKm = Math.round(multiRoute.getRoutes().get(0).properties.get('duration').value/60); //в секундах // мин
-    summ.rast = (rasKm+durKm)*2;
-        });
-    });
- } , 1000);
+//     myMap.setBounds(multiRoute.getBounds(),true);
+//     // var sred = multiRoute.getRoutes().get(0).properties.get("durationInTraffic").value + multiRoute.getRoutes().get(0).properties.get("duration").value
+//     // setTimeout(raschet, 3000, multiRoute.getRoutes().get(0).properties.get('distance').value, sred/2);
+//     var rasKm = Math.round(multiRoute.getRoutes().get(0).properties.get('distance').value/1000); //в метрах // км
+//     var durKm = Math.round(multiRoute.getRoutes().get(0).properties.get('duration').value/60); //в секундах // мин
+//     summ.rast = (rasKm+durKm)*2;
+//         });
+//     });
+//  } , 1000);
 
 let options = setInterval( function() { 
     if (vm.model.options === undefined) {summ.options = 0 }else{
@@ -193,6 +193,7 @@ var vm = new Vue({
                     inputType: "text",
                     label: "Точка А 🚩",
                     model: "address_A",
+                    id: 'address',
                     multi: true,
                     buttons: [
                         {
