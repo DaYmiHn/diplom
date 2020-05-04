@@ -1,4 +1,95 @@
 var controlId_A, controlId_B;
+
+
+let summ = {
+  rast: 0,  
+  options: 0,  
+  fast: 0,  
+  ves: 0,
+  total: 0     
+};
+
+let rast = setInterval( function() { 
+    ymaps.ready(function () {
+    var multiRoute = new ymaps.multiRouter.MultiRoute({
+        referencePoints: [vm.model.address_A,
+      vm.model.address_B],
+        params: {
+            routingMode: 'masstransit',
+            results: "1"
+        }
+    }, {
+        boundsAutoApply: false
+    });
+
+    var changeLayoutButton = new ymaps.control.Button({
+        data: { content: "Изменить макет подписи для пеших сегментов"},
+        options: { selectOnClick: true }
+    });
+
+    changeLayoutButton.events.add('select', function () {
+        multiRoute.options.set(
+            "routeWalkMarkerIconContentLayout",
+            ymaps.templateLayoutFactory.createClass('{{ properties.duration.text }}')
+        );
+    });
+
+    changeLayoutButton.events.add('deselect', function () {
+        multiRoute.options.unset("routeWalkMarkerIconContentLayout");
+    });
+
+    var myMap = new ymaps.Map('map_A', {
+        center: [59.940664, 30.316987],
+        zoom: 12,
+        controls: [changeLayoutButton]
+    }, {
+        buttonMaxWidth: 350
+    });
+
+    myMap.geoObjects.add(multiRoute);
+    // var geoBounds = new YMaps.GeoCollectionBounds(); 
+
+    multiRoute.model.events.add("requestsuccess", function() {
+
+    myMap.setBounds(multiRoute.getBounds(),true);
+    // var sred = multiRoute.getRoutes().get(0).properties.get("durationInTraffic").value + multiRoute.getRoutes().get(0).properties.get("duration").value
+    // setTimeout(raschet, 3000, multiRoute.getRoutes().get(0).properties.get('distance').value, sred/2);
+    var rasKm = Math.round(multiRoute.getRoutes().get(0).properties.get('distance').value/1000); //в метрах // км
+    var durKm = Math.round(multiRoute.getRoutes().get(0).properties.get('duration').value/60); //в секундах // мин
+    summ.rast = (rasKm+durKm)*2;
+        });
+    });
+ } , 1000);
+
+let options = setInterval( function() { 
+    if (vm.model.options === undefined) {summ.options = 0 }else{
+
+    summ.options = vm.model.options.length * 30;
+    }
+ } , 1000);
+
+let fast = setInterval( function() {
+    // var radioButtons = $("#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div.form-group.valid.field-radios > div > div");
+    // var selectedIndex = radioButtons.index(radioButtons.filter('.is-checked'));
+    $("#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div.form-group.valid.field-radios > div > div > label").each((index, item) => {
+     if(item.className.includes('is-checked')) summ.fast = index *50;
+    } );
+    // console.log(selectedIndex);
+} , 1000);
+
+let ves = setInterval( function() {
+    summ.ves = vm.model.ves * 10;
+ } , 1000);
+
+let total = setInterval( function() {
+    summ.total = summ.rast + summ.options + summ.fast + summ.ves;
+    if (isNaN(summ.total)) {
+        vm.model.cost = 'Минимум 30 руб.'
+    } else {
+        vm.model.cost = summ.total + ' руб.';        
+    }
+ } , 1000);
+
 var vm = new Vue({
     el: "#app",
 
@@ -12,11 +103,11 @@ var vm = new Vue({
                 id: 1,
                 name: "John Doe",
                 password: "J0hnD03!x4",
-                age: 35,
                 email: "john.doe@gmail.com",
                 status: true,
-                address_A : $('.customControl').text(),
-                address_B : $('.customControl').text()
+                address_A : 'Россия, Санкт-Петербург, Тихорецкий проспект, 1к2',
+                address_B : 'Россия, Санкт-Петербург, Среднеохтинский проспект, 11к4',
+                cost : 1500
             },
             schema: {
                 fields: [{
@@ -210,11 +301,12 @@ var vm = new Vue({
                 },{
                     type: "label",
                     label: "Цена:",
-                    model: "cost",
-                    get: function(model) { 
-                        return model.ves ? model.ves*2+" руб." : "Минимально 100 руб.";
-                      // return model && model.created ? moment(model.created).format("LLL") : "-"; 
-                    }
+                    model: "cost"//,
+                    // get: function(model) { 
+                    //     return summ.total+" руб.";
+                    //     // return model.ves ? model.ves*2+" руб." : "Минимально 100 руб.";
+                    //   // return model && model.created ? moment(model.created).format("LLL") : "-"; 
+                    // }
                 },{
                     type: "submit",
                     buttonText: "Оформить заказ"
@@ -250,5 +342,72 @@ var vm = new Vue({
                 });
             }
         }
-    },
+        // ,raschet: function(model){
+        //     vm.model.cost = 0;
+        //     // if (vm.model.cost = 0) {}
+        //     $('#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div.form-group.valid.field-label > div > span').html('считаем')
+        //     ymaps.ready(function () {
+        //         var multiRoute = new ymaps.multiRouter.MultiRoute({
+        //             referencePoints: [vm.model.address_A,
+        //           vm.model.address_B],
+        //             params: {
+        //                 routingMode: 'masstransit',
+        //                 results: "1"
+        //             }
+        //         }, {
+        //             boundsAutoApply: false
+        //         });
+
+        //         var changeLayoutButton = new ymaps.control.Button({
+        //             data: { content: "Изменить макет подписи для пеших сегментов"},
+        //             options: { selectOnClick: true }
+        //         });
+
+        //         changeLayoutButton.events.add('select', function () {
+        //             multiRoute.options.set(
+        //                 "routeWalkMarkerIconContentLayout",
+        //                 ymaps.templateLayoutFactory.createClass('{{ properties.duration.text }}')
+        //             );
+        //         });
+
+        //         changeLayoutButton.events.add('deselect', function () {
+        //             multiRoute.options.unset("routeWalkMarkerIconContentLayout");
+        //         });
+
+        //         var myMap = new ymaps.Map('map_A', {
+        //             center: [59.940664, 30.316987],
+        //             zoom: 12,
+        //             controls: [changeLayoutButton]
+        //         }, {
+        //             buttonMaxWidth: 350
+        //         });
+                
+        //         myMap.geoObjects.add(multiRoute);
+        //         // var geoBounds = new YMaps.GeoCollectionBounds(); 
+
+        //         multiRoute.model.events.add("requestsuccess", function() {
+
+        //        myMap.setBounds(multiRoute.getBounds(),true);
+        //        // var sred = multiRoute.getRoutes().get(0).properties.get("durationInTraffic").value + multiRoute.getRoutes().get(0).properties.get("duration").value
+        //        // setTimeout(raschet, 3000, multiRoute.getRoutes().get(0).properties.get('distance').value, sred/2);
+        //        var rasKm = Math.round(multiRoute.getRoutes().get(0).properties.get('distance').value/1000); //в метрах // км
+        //        var durKm = Math.round(multiRoute.getRoutes().get(0).properties.get('duration').value/60); //в секундах // мин
+        //        costRast = (rasKm+durKm)*2;
+        //        // console.log(costRast)
+        //        // console.log('costRast')
+        //        vm.model.cost += costRast;
+
+
+        //        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //        vm.model.cost += vm.model.options.length * 50;
+
+        //       });
+        //     });
+        // }
+    },watch : { name: function() {
+        alert('dfg')
+    }},
 });
+var costRast;
+
+
