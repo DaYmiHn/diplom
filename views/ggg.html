@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>🏵Курьерская служба🏵</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maps.api.2gis.ru/2.0/loader.js"></script>
+    //- <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=d40fb052-95ef-400a-b9ad-d8e14749a9be&load=package.full" type="text/javascript"></script>
+    //- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/css/suggestions.min.css" rel="stylesheet" />
+    //- <script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js"></script>
+
+
+
+    <script type="text/javascript" src="https://unpkg.com/vue@2.5.17/dist/vue.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/vue-form-generator/dist/vfg.css">
+    <link rel="stylesheet" type="text/css" href="../public/stylesheets/main.css
+    ">
+</head>
+<body>
+    <header>
+      <div> </div>
+      <div class="header_item send"><p>ОТПРАВИТЬ ПОСЫЛКУ</p></div>
+      <div class="header_item shop" ><p>МАГАЗИНЫ</p></div>
+      <div class="header_item cabinet"><p>ЛИЧНЫЙ КАБИНЕТ</p></div>
+      <div></div>
+    </header>
+
+
+    <section id="container">
+            <span>
+           
+        
+             Дебил
+            , мы нечто большее, <br>чем просто курьерская служба
+            </span>
+    </section>
+
+
+    <section id="send" class="overflow sec_block">
+      <div class="send_block ">
+
+
+
+
+
+        <div class="container" id="app">
+          <div class="panel panel-default">
+            <div class="panel-heading">Form</div>
+            <div class="panel-body">
+              <vue-form-generator :schema="schema" :model="model" :options="formOptions"></vue-form-generator>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Model</div>
+            <div class="panel-body">
+              <pre v-if="model" v-html="prettyJSON(model)"></pre>
+            </div>
+          </div>
+
+
+
+          <div class="ya_map_A" id="A">
+            <br>
+            //- <div class="center_point_map"></div>
+            |Координаты маркера: <div id="location">LatLng(54.98, 82.89)</div>
+            //- <div id="map_A"></div>
+            <div id="map_A" ></div>
+          </div>
+            <div class="ya_map_B" id="B">
+                <br>
+                <div class="center_point_map"></div>
+
+                <div id="map_B"></div>
+                <div id="map_ras" style="display: none;"></div>
+            </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="shop" class="overflow sec_block">
+        <div class="shop_block">
+                <div class="block_shop_item overflow">
+                
+                </div>
+
+        </div>
+    </section>
+
+
+    <section id="cabinet" class="overflow sec_block">
+      <div class="cabinet_block">3</div>
+    </section>
+    <footer>
+
+    </footer>
+    <div id="overflow"></div>
+    <div class="bg-wrapper">
+      <div class="bg-grad one active"></div>
+      <div class="bg-grad two"></div>
+      <div class="bg-grad three"></div>
+      <div class="bg-grad four"></div>
+      <div class="bg-grad five"></div>
+      <div class="bg-grad six"></div>
+    </div>
+
+   
+
+
+
+</script>
+</body>
+</html>

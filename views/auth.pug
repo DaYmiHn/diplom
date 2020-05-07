@@ -102,20 +102,24 @@ block content
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;      
         }
+        a{
+          cursor:pointer;
+        }
     <div class="login-page">
       <div class="form">
         <form class="register-form">
+          <input type="text" placeholder="Имя"/>
           <input type="text" placeholder="Логин"/>
           <input type="password" placeholder="Пароль"/>
           <input type="text" placeholder="Email"/>
           <button>создать</button>
-          <p class="message">Уже с нами? <a href="">Войти</a></p>
+          <p class="message">Уже с нами? <a>Войти</a></p>
         </form>
         <form class="login-form">
           <input type="text" placeholder="Логин"/>
-          <input type="password" placeholder="Пароль"/>
+          <input type="password" placeholder="Пароль" value="123"/>
           <button>войти</button>
-          <p class="message">Не с нами? <a href="">Создать аккаунт</a></p>
+          <p class="message">Не с нами? <a>Создать аккаунт</a></p>
         </form>
       </div>
     </div>
@@ -126,28 +130,37 @@ block content
             });
             
 
-            $('form.register-form > button').click(function(){
-                var log = $('body > div.login-page > div > form.register-form > input[type=text]:nth-child(1)').val();
-                var pas = $('body > div.login-page > div > form.register-form > input[type=password]:nth-child(2)').val();
+            $('form.register-form > button').click(function(e){
+                e.preventDefault();
+                var name = $('body > div.login-page > div > form.register-form > input[type=text]:nth-child(1)').val();
+                var log = $('body > div.login-page > div > form.register-form > input[type=text]:nth-child(2)').val();
+                var pas = $('body > div.login-page > div > form.register-form > input[type=password]:nth-child(3)').val();
                 console.log(pas);
-                var email = $('body > div.login-page > div > form.register-form > input[type=text]:nth-child(3)').val();
+                var email = $('body > div.login-page > div > form.register-form > input[type=text]:nth-child(4)').val();
                 $.ajax({
                     url: 'api/user',
                     type: "POST",
-                    data: {log: log, pas: pas, email: email},
+                    data: {log: log, pas: pas, email: email, name: name},
                     success: function(data){
-                        eval(data);
+                        if(data == 'done') document.location.reload(true);
+                      //- else alert("Неправильный логин или пароль!");
+                      else alert('Логин уже есть');;
                     }
                 });
             });
-            $('form.login-form > button').click(function(){
+            $('form.login-form > button').click(function(e){
+                e.preventDefault();
                 var log = $('body > div.login-page > div > form.login-form > input[type=text]:nth-child(1)');
                 var pas = $('body > div.login-page > div > form.login-form > input[type=password]:nth-child(2)');
                 $.ajax({
                     url: 'api/user',
                     type: "GET",
                     data: {log: log.val(), pas: pas.val()},
-                    success: function(data){eval(data);}
+                    success: function(data){
+                        if(data == 'done') document.location.reload(true);
+                      else alert("Неправильный логин или пароль!");
+                      //- else alert('Логин уже есть');;
+                    }
                     
                 });
             });

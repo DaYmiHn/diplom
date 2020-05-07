@@ -9,6 +9,42 @@ let summ = {
   total: 0     
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // let rast = setInterval( function() { 
 //     ymaps.ready(function () {
 //     var multiRoute = new ymaps.multiRouter.MultiRoute({
@@ -102,7 +138,7 @@ var vm = new Vue({
             model: {
                 id: 1,
                 name: "John Doe",
-                password: "J0hnD03!x4",
+                phone: "+7",
                 email: "john.doe@gmail.com",
                 status: true,
                 address_A : 'Россия, Санкт-Петербург, Тихорецкий проспект, 1к2',
@@ -123,13 +159,11 @@ var vm = new Vue({
                     validator: VueFormGenerator.validators.string
                 }, {
                     type: "input",
-                    inputType: "password",
-                    label: "Пароль",
-                    model: "password",
-                    min: 6,
-                    required: true,
-                    hint: "Минимум 6 символов",
-                    validator: VueFormGenerator.validators.string
+                    inputType: "text",
+                    maxlength: 12,
+                    id: "phone",
+                    label: "Телефон",
+                    model: "phone"
                 }, {
                     type: "radios",
                     label: "Скорость доставки",
@@ -139,10 +173,34 @@ var vm = new Vue({
                         "Очень быстро 🐴",
                         "Побить рекорды скорости 🐳💨"
                     ]
+                }, {
+                    type: "checklist",
+                    label: "Опции",
+                    model: "options",
+                    multi: true,
+                    required: true,
+                    multiSelect: true,
+                    values: [
+                        "Хрупкая посылка",
+                        "Срочная доставка",
+                        "Бесконтактная доставка",
+                        "Ночная доставка 🌙",
+                        "Трезвый курьер 🍾",
+                        "Некурящий курьер 🚭",
+                        "Курьер с чувством юмора 🤡"
+                    ]
                 },{
                     type: "dateTimePicker",
-                    label: "Время забора посылки 🕐",
+                    label: "Время забора",
                     model: "startTime",
+                    format: "HH:m",
+                    dateTimePickerOptions: {
+                        format: "HH:m"
+                    }
+                },{
+                    type: "dateTimePicker",
+                    label: "и вручения посылки 🕐",
+                    model: "endTime",
                     format: "HH:m",
                     dateTimePickerOptions: {
                         format: "HH:m"
@@ -162,21 +220,36 @@ var vm = new Vue({
                     placeholder: "User's e-mail address",
                     validator: VueFormGenerator.validators.email
                 }, {
-                    type: "checklist",
-                    label: "Опции",
-                    model: "options",
-                    multi: true,
-                    required: true,
-                    multiSelect: true,
-                    values: [
-                        "Хрупкая посылка",
-                        "Срочная доставка",
-                        "Бесконтактная доставка",
-                        "Ночная доставка 🌙",
-                        "Трезвый курьер 🍾",
-                        "Некурящий курьер 🚭",
-                        "Курьер с чувством юмора 🤡"
-                    ]
+                    type: "input",
+                    inputType: "text",
+                    label: "Точка А 🚩",
+                    model: "address_A",
+                    id: 'address',
+                    multi: true
+                }, {
+                    type: "input",
+                    inputType: "text",
+                    label: "Точка Б 🏁",
+                    model: "address_B",
+                    id: 'address_b',
+                    multi: true
+                },{
+                    type: "textArea",
+                    label: "Комментарий",
+                    model: "comment",
+                    hint: "Максимально 500 символов",
+                    max: 500,
+                    placeholder: "Напишите поподробнее о своём заказе и деталях....",
+                    rows: 2
+                },{
+                    type: "label",
+                    label: "Цена:",
+                    model: "cost"//,
+                    // get: function(model) { 
+                    //     return summ.total+" руб.";
+                    //     // return model.ves ? model.ves*2+" руб." : "Минимально 100 руб.";
+                    //   // return model && model.created ? moment(model.created).format("LLL") : "-"; 
+                    // }
                 },{
                     type: "switch",
                     label: "Согласны ли вы с правилами доставки?",
@@ -188,126 +261,6 @@ var vm = new Vue({
                     default: true,
                     textOn: "Да, конечно",
                     textOff: "Нет, спасибо"
-                }, {
-                    type: "input",
-                    inputType: "text",
-                    label: "Точка А 🚩",
-                    model: "address_A",
-                    id: 'address',
-                    multi: true,
-                    buttons: [
-                        {
-                            classes: "btn-location",
-                            label: "Определить",
-                            onclick: function(model) {
-                                clearInterval(controlId_A);
-                                $(".ya_map_A").hide();
-                                if (navigator.geolocation) {
-                                    navigator.geolocation.getCurrentPosition(function(pos) {
-                                        let coords = pos.coords.longitude.toFixed(5) + "," + pos.coords.latitude.toFixed(5);
-                                        $.ajax({
-                                            url: "https://geocode-maps.yandex.ru/1.x/?apikey=d40fb052-95ef-400a-b9ad-d8e14749a9be&geocode="+coords,
-                                            dataType: "xml",
-                                            success: function(data){
-                                                let address = $(data).find('GeocoderMetaData text').first().text();
-                                                model.address_A = address;
-                                            }
-                                        });
-
-                                    });
-                                    console.log(model.address)
-                                } else {
-                                    alert("Geolocation is not supported by this browser.");
-                                }
-                            }
-                        },
-                        {
-                            classes: "btn-clear",
-                            label: "Выбрать на карте",
-                            onclick: function(model, field) {
-                                $(".ya_map_A").insertAfter($('.btn-clear').first().parent().parent());
-                                $(".ya_map_A").show(); $('.customControl').first().hide();
-                                $('.btn-allow').first().toggle(); $('.btn-clear').first().toggle();
-                                controlId_A = setInterval(function() {
-                                    model.address_A = $('.customControl').first().text();
-                                }, 500);
-
-                            }
-                        },
-                        {
-                            classes: "btn-allow",
-                            label: "Подтвердить",
-                            onclick: function(model, field) {
-                                $(".ya_map_A").toggle();
-                                $('.btn-allow').first().toggle();
-                                $('.btn-clear').first().toggle();
-                            }
-                        }
-                    ]
-                }, {
-                    type: "input",
-                    inputType: "text",
-                    label: "Точка Б 🏁",
-                    model: "address_B",
-                    multi: true,
-                    buttons: [
-                        {
-                            classes: "btn-location",
-                            label: "Определить",
-                            onclick: function(model) {
-                                clearInterval(controlId_B);
-                                $(".ya_map_B").hide();
-                                if (navigator.geolocation) {
-                                    navigator.geolocation.getCurrentPosition(function(pos) {
-                                        let coords = pos.coords.longitude.toFixed(5) + "," + pos.coords.latitude.toFixed(5);
-                                        $.ajax({
-                                            url: "https://geocode-maps.yandex.ru/1.x/?apikey=d40fb052-95ef-400a-b9ad-d8e14749a9be&geocode="+coords,
-                                            dataType: "xml",
-                                            success: function(data){
-                                                let address = $(data).find('GeocoderMetaData text').first().text();
-                                                model.address_B = address;
-                                            }
-                                        });
-
-                                    });
-                                    console.log(model.address)
-                                } else {
-                                    alert("Geolocation is not supported by this browser.");
-                                }
-                            }
-                        },
-                        {
-                            classes: "btn-clear",
-                            label: "Выбрать на карте",
-                            onclick: function(model, field) {
-                                $(".ya_map_B").insertAfter($('.btn-clear').eq(1).parent().parent());
-                                $(".ya_map_B").show(); $('.customControl').eq(1).hide();
-                                $('.btn-allow').eq(1).toggle(); $('.btn-clear').eq(1).toggle();
-                                controlId_B = setInterval(function() {
-                                    model.address_B = $('.customControl').eq(1).text();
-                                }, 500);
-
-                            }
-                        },
-                        {
-                            classes: "btn-allow",
-                            label: "Подтвердить",
-                            onclick: function(model, field) {
-                                $(".ya_map_B").toggle();
-                                $('.btn-allow').eq(1).toggle();
-                                $('.btn-clear').eq(1).toggle();
-                            }
-                        }
-                    ]
-                },{
-                    type: "label",
-                    label: "Цена:",
-                    model: "cost"//,
-                    // get: function(model) { 
-                    //     return summ.total+" руб.";
-                    //     // return model.ves ? model.ves*2+" руб." : "Минимально 100 руб.";
-                    //   // return model && model.created ? moment(model.created).format("LLL") : "-"; 
-                    // }
                 },{
                     type: "submit",
                     buttonText: "Оформить заказ"
@@ -348,5 +301,63 @@ var vm = new Vue({
     }},
 });
 var costRast;
+var directionsRenderer;
+var directionsService;
+function initMap() {
+    directionsRenderer = new google.maps.DirectionsRenderer;
+    directionsService = new google.maps.DirectionsService;
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 14,
+      center: {lat: 37.77, lng: -122.447}
+    });
+    directionsRenderer.setMap(map);
+    
+    
+    // document.getElementById('mode').addEventListener('change', function() {
+    //   calculateAndDisplayRoute(directionsService, directionsRenderer);
+    // });
+} 
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+    let a =vm.model.address_A;
+    let b =vm.model.address_B;
+    setTimeout(function(){
+        var selectedMode = 'TRANSIT';
+        directionsService.route({
+          origin: a,  // Haight.
+          destination: b,  // Ocean Beach.
+          // Note that Javascript allows us to access the constant
+          // using square brackets and a string value as its
+          // "property."
+          travelMode: google.maps.TravelMode[selectedMode]
+        }, function(response, status) {
+          if (status == 'OK') {
+            directionsRenderer.setDirections(response);
+            console.log(response.routes[0].legs[0].distance.value/1000);
+            console.log(response.routes[0].legs[0].duration.value/60);
+            // console.log(response.routes[0]);
+            console.log(response.routes[0].fare.value);
+
+            var rasKm = Math.round(response.routes[0].legs[0].distance.value/1000); //в метрах // км
+            var durKm = Math.round(response.routes[0].legs[0].duration.value/60); //в секундах // мин
+            summ.rast = (rasKm+durKm)*2;
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        }); 
+    }, 3000);
+    // var selectedMode = document.getElementById('mode').value;
+}
 
 
+var data;
+    $("#address, #address_b").suggestions({
+        token: "2a590f083f301abfa0b8b944b982bf15b2d5d5a6",
+        type: "ADDRESS",
+        /* Вызывается, когда пользователь выбирает одну из подсказок */
+        onSelect: function(suggestion) {
+            data = suggestion;
+            console.log(data);
+            calculateAndDisplayRoute(directionsService, directionsRenderer);
+        }
+    });

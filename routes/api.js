@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var user = require('../controllers/user.js')
 
 var sqlite3 = require('sqlite3');
 var db = new sqlite3.Database('database.db');
@@ -29,23 +29,13 @@ router.route('/package/:id')
 router.route('/user/:id*?')
 	.get(function(req, res) {
 		if (!req.params.id) {
-			db.each(`SELECT * FROM user WHERE log = '${req.query.log}' AND pas = '${req.query.pas}'`, function(err, row) {
-				res.cookie('auth', 'true' );
-				res.cookie('id',  row.id);
-	  			res.send('document.location.reload(true);');
-			}, function(err, rows) {
-				if (rows == 0) {
-					res.send('alert("Неправильный логин или пароль!");');
-				}
-			});
+			user.getTrue(req, res);
+		} else {
+			res.send(user.getId(req, res, req.params.id));
 		}
   	})
 	.post(function(req, res) {
-		console.log(`INSERT INTO 'user' (log,pas) VALUES ('${req.body.log}','${req.body.pas}');`);
-		db.run(`INSERT INTO 'user' (log,pas) VALUES ('${req.body.log}','${req.body.pas}');`, function(err, row) {
-	  			if (!err){res.cookie('auth', 'true' ); res.send('document.location.reload(true);');}
-				else res.send("alert('Логин уже есть');");
-			});
+		user.newUser(req, res)
 	})
 	.put(function(req, res) {
 		res.send('Update the book');

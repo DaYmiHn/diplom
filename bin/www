@@ -1,5 +1,13 @@
 #!/usr/bin/env node
 
+
+
+
+
+
+
+
+
 /**
  * Module dependencies.
  */
@@ -88,3 +96,10 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+
+
+
+var fs = require('fs');
+eval(fs.readFileSync('controllers/sockets.js')+'');

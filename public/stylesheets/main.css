@@ -50,6 +50,22 @@ header {
 }
 .header_item{
     cursor: pointer;
+    /*border-bottom:1px solid white;*/
+
+
+}
+.panel {
+    height: calc(100vh - 60px);
+}
+.send{
+    border-right:1px solid #383838;
+    border-left:1px solid #383838;
+}
+.shop{
+    border-right:1px solid #383838;
+}
+.cabinet{
+    border-right:1px solid #383838;
 }
 .header_item:hover{
     font-size: 12.5pt;
@@ -93,13 +109,13 @@ section{
 #send{
     overflow: scroll;
     overflow-x: hidden;
-    overflow-y: scroll;
+    /*overflow-y: hidden;*/
 }
 #shop{
     padding-top: 10px;
     overflow: scroll;
     overflow-x: hidden;
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
 }
 .block_shop_item{
     width: calc(100% - 20px);
@@ -188,11 +204,11 @@ pre .null { color: red; }
 pre .key { color: green; }
 
 h1 {
-    text-align: center;
+    /*text-align: center;*/
     font-size: 36px;
     margin-top: 20px;
     margin-bottom: 10px;
-    font-weight: 500;
+    font-weight: 900;
 }
 
 fieldset {
@@ -200,6 +216,7 @@ fieldset {
 }
 
 .panel {
+        height: auto;
     margin-bottom: 20px;
     background-color: #fff;
     border: 1px solid transparent;
@@ -210,6 +227,7 @@ fieldset {
 }
 
 .panel-heading {
+    text-align: center;
     color: #333;
     background-color: #f5f5f5;
     border-color: #ddd;
@@ -243,18 +261,52 @@ fieldset {
 
 #app > div:nth-child(1) > div.panel-body > div > fieldset > div {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 15px;
+    grid-template-columns: repeat(4,1fr);
+    row-gap: 20px;
+    column-gap: 15px;
 }
 
 
-#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(9),
-#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(10)
+/*#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(9),*/
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div
 /*#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(11),*/
 /*#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:last-child*/
 {
     grid-column: span 2;
 }
+
+
+/*#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(11),*/
+
+
+
+
+
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(5),
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(6),
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(7),
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(8),
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(12),
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(13)
+{
+grid-column: span 1;
+}
+
+#app > div:nth-child(1) > div.panel-body > div > fieldset > div > div:nth-child(11){
+grid-column: span 4;
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 #app > div:nth-child(1) > div.panel-body > div > fieldset > div > div.form-group.valid.field-dateTimePicker > div > div{
     width: 100%;
@@ -273,4 +325,112 @@ fieldset {
 
 #app > div:nth-child(1) > div.panel-body > div > fieldset > div > div.form-group.valid.field-submit > div > input[type=submit]{
     width: 100%;
+}
+
+
+.cabinet_block{
+    padding:30px 30px 0px 30px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 200px);
+    grid-gap: 20px;
+}
+
+.avatar{
+    grid-column: 1;
+    grid-row: 2 span;
+    /*background-image: url("../images/rabota-kurerom-v-delivery-club-kak-ustroitsya-skolko-mozhno-zarabotat-otzyvy-sotrudnikov-3.jpg");*/
+    background-position: center;
+    background-size: cover;
+
+}
+
+.info{
+    grid-column: 2 span;
+}
+
+.settings{
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    row-gap: 5px;
+}
+.zakaz{
+    grid-column: 2/5;
+    grid-row: 2 span;
+    border: 1px dashed black;
+}
+
+
+.current{
+    grid-column: 4 span;
+    border: 1px dashed black;
+}
+
+
+div.settings > input[type=button] {
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    display: inline-block;
+    /*padding: 10px 30px;
+    margin: 10px 20px;*/
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #000;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif; 
+    color: #000;
+    transition: .2s ease-in-out;
+}
+div.settings > input[type=button]:before {
+    content: "";
+    background: linear-gradient(90deg, rgba(255,255,255,.1), rgba(255,255,255,.5));
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: -8px;
+    left: -75px;
+    transform: skewX(-45deg);
+}
+div.settings > input[type=button]:hover {
+    background: #000;
+    color: #fff;
+}
+div.settings > input[type=button]:hover:before {
+    left: 150px;
+    transition: .5s ease-in-out;
+}
+
+h1 {
+    font-weight: 900;
+}
+
+
+.avatar{
+    cursor: pointer;
+}
+
+
+.accordionA {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordionA:hover {
+  background-color: #ccc; 
+}
+
+.panelA {
+  padding: 0 18px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
 }

@@ -12,10 +12,8 @@ block content
 
     <section id="container">
             <span>
-            if name
-                | #{name}
-            else
-                | Дебил
+                | #{user.name}
+
             | , мы нечто большее, <br>чем просто курьерская служба
             </span>
     </section>
@@ -30,18 +28,34 @@ block content
 
         <div class="container" id="app">
           <div class="panel panel-default">
-            <div class="panel-heading">Form</div>
+            <div class="panel-heading">Оформление заказа</div>
             <div class="panel-body">
               <vue-form-generator :schema="schema" :model="model" :options="formOptions"></vue-form-generator>
             </div>
-          </div>
-
-          <div class="panel panel-default">
-            <div class="panel-heading">Model</div>
-            <div class="panel-body">
-              <pre v-if="model" v-html="prettyJSON(model)"></pre>
+            <div class="rules">
+              <h1>Правила</h1>
+              <ol>
+                <li>Чебурашка</li>
+                <li>Крокодил Гена</li>
+                <li>Шапокляк</li>
+                <li>Крыса Лариса</li>
+                <li>Крыса Лариса</li>
+                <li>Крыса Лариса</li>
+                <li>Крыса Лариса</li>
+                <li>Крыса Лариса</li>
+                <li>Крыса Лариса</li>
+                <li>Крыса Лариса</li>
+                <li>Крыса Лариса</li>
+              </ol>
             </div>
           </div>
+          <div id="map"></div>
+          //- <div class="panel panel-default">
+          //-   <div class="panel-heading">Модель</div>
+          //-   <div class="panel-body">
+          //-     <pre v-if="model" v-html="prettyJSON(model)"></pre>
+          //-   </div>
+          //- </div>
 
 
 
@@ -59,6 +73,7 @@ block content
                 <div id="map_B"></div>
                 <div id="map_ras" style="display: none;"></div>
             </div>
+
         </div>
       </div>
     </section>
@@ -76,7 +91,14 @@ block content
 
 
     <section id="cabinet" class="overflow sec_block">
-      <div class="cabinet_block">3</div>
+    <input type="hidden" value="#{user.id}" id="id_user">
+   
+      if user.status == 'cli' 
+        include lk/cli
+      if user.status == 'cur' 
+        include lk/cur
+      if user.status == 'mag' 
+        include lk/mag
     </section>
     <footer>
 
@@ -92,6 +114,13 @@ block content
     </div>
 
     script.
+        window.onload = function() {
+           vm.model.name = '#{user.name}';
+        };
+        function exitUser(){
+            document.cookie = "auth=false; ";
+            location.reload();
+        }
         var locationInfo = document.getElementById('location');
 
               DG.then(function () {
@@ -114,3 +143,8 @@ block content
                       locationInfo.innerHTML = lat + ', ' + lng;
                   });
               });
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+
+    
+
