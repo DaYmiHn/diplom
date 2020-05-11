@@ -5,28 +5,33 @@ var sqlite3 = require('sqlite3');
 var db = new sqlite3.Database('database.db');
 
 
-var shops = {
-  data: [],
-  log: function (message) {
-    console.log(this.data);
-  },
-  init: function() {
-    db.each(`SELECT * FROM shop `, (err, row )=> {
-		if(err) throw err;
-		shops.data.push(row);    
-	});
-    console.log(shops.data);
-  }
-};    shops.init();
-
-
-
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   	if (req.cookies['auth'] == 'true') {
-      db.each(`SELECT * FROM user WHERE id = '${req.cookies['id']}'`, function(err, row) {
-        res.render('index', { auth: 'true', shops: shops.data, user: row});
+      db.serialize(function() {
+          var data = [];
+          db.each(`SELECT * FROM user WHERE status = 'mag' `, (err, row )=> {
+            if(err) throw err;
+            data.push(row);
+          });
+          var products = [];
+          db.each(`SELECT * FROM product `, (err, row )=> {
+            if(err) throw err;
+            // console.log(row);
+            products.push(row);    
+          });
+          var packages = [];
+          db.each(`SELECT * FROM package `, (err, row )=> {
+            if(err) throw err;
+            // console.log(row);
+            packages.push(row);    
+          });
+          console.log(products);
+          db.each(`SELECT * FROM user WHERE id = '${req.cookies['id']}'`, function(err, row) {
+            // console.log(shops.products);
+            res.render('index', { auth: 'true', shops: data, products: products, user: row, packages: packages});
+            // delete shops;
+          });
       });
   		
   	} else {

@@ -6,7 +6,8 @@ let summ = {
   options: 0,  
   fast: 0,  
   ves: 0,
-  total: 0     
+  total: 0,
+  cart: 0     
 };
 
 
@@ -116,13 +117,13 @@ let fast = setInterval( function() {
 let ves = setInterval( function() {
     summ.ves = vm.model.ves * 10;
  } , 1000);
-
 let total = setInterval( function() {
-    summ.total = summ.rast + summ.options + summ.fast + summ.ves;
+    var button = document.querySelector("#app > div.panel.panel-default > div.panel-body > div > fieldset > div > div.form-group.valid.field-submit > div > input[type=submit]");
+    summ.total = summ.rast + summ.options + summ.fast + summ.ves + summ.cart;
     if (isNaN(summ.total)) {
-        vm.model.cost = 'Минимум 30 руб.'
+        button.value = 'Оформить заказ минимум 30 руб.'
     } else {
-        vm.model.cost = summ.total + ' руб.';        
+        button.value = 'Оформить заказ за '+summ.total + ' руб.'        
     }
  } , 1000);
 
@@ -140,10 +141,9 @@ var vm = new Vue({
                 name: "John Doe",
                 phone: "+7",
                 email: "john.doe@gmail.com",
-                status: true,
                 address_A : 'Россия, Санкт-Петербург, Тихорецкий проспект, 1к2',
-                address_B : 'Россия, Санкт-Петербург, Среднеохтинский проспект, 11к4',
-                cost : 1500
+                address_B : 'Россия, Санкт-Петербург, Среднеохтинский проспект, 11к4'
+                
             },
             schema: {
                 fields: [{
@@ -151,10 +151,7 @@ var vm = new Vue({
                     inputType: "text",
                     label: "Ваше имя 😺",
                     model: "name",
-                    readonly: false,
-                    featured: true,
-                    required: true,
-                    disabled: false,
+                    id: "name",
                     placeholder: "User's name",
                     validator: VueFormGenerator.validators.string
                 }, {
@@ -178,7 +175,6 @@ var vm = new Vue({
                     label: "Опции",
                     model: "options",
                     multi: true,
-                    required: true,
                     multiSelect: true,
                     values: [
                         "Хрупкая посылка",
@@ -193,6 +189,8 @@ var vm = new Vue({
                     type: "dateTimePicker",
                     label: "Время забора",
                     model: "startTime",
+                    id: "startTime",
+                    placeholder: "09:00",
                     format: "HH:m",
                     dateTimePickerOptions: {
                         format: "HH:m"
@@ -200,7 +198,9 @@ var vm = new Vue({
                 },{
                     type: "dateTimePicker",
                     label: "и вручения посылки 🕐",
+                    placeholder: "09:00",
                     model: "endTime",
+                    id: "endTime",
                     format: "HH:m",
                     dateTimePickerOptions: {
                         format: "HH:m"
@@ -210,6 +210,7 @@ var vm = new Vue({
                     inputType: "number",
                     label: "Её вес (кг.) 📦",
                     model: "ves",
+                    id: "ves",
                     min: 18,
                     validator: VueFormGenerator.validators.number
                 }, {
@@ -217,6 +218,7 @@ var vm = new Vue({
                     inputType: "email",
                     label: "Ваш E-mail 📧",
                     model: "email",
+                    id: "email",
                     placeholder: "User's e-mail address",
                     validator: VueFormGenerator.validators.email
                 }, {
@@ -241,26 +243,6 @@ var vm = new Vue({
                     max: 500,
                     placeholder: "Напишите поподробнее о своём заказе и деталях....",
                     rows: 2
-                },{
-                    type: "label",
-                    label: "Цена:",
-                    model: "cost"//,
-                    // get: function(model) { 
-                    //     return summ.total+" руб.";
-                    //     // return model.ves ? model.ves*2+" руб." : "Минимально 100 руб.";
-                    //   // return model && model.created ? moment(model.created).format("LLL") : "-"; 
-                    // }
-                },{
-                    type: "switch",
-                    label: "Согласны ли вы с правилами доставки?",
-                    model: "rules",
-                    multi: true,
-                    readonly: false,
-                    featured: false,
-                    disabled: false,
-                    default: true,
-                    textOn: "Да, конечно",
-                    textOff: "Нет, спасибо"
                 },{
                     type: "submit",
                     buttonText: "Оформить заказ"

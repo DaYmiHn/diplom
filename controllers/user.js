@@ -31,7 +31,7 @@ module.exports = {
   },
   newUser: function (req, res) {
     console.log(`INSERT INTO 'user' (log,pas,email,name) VALUES ('${req.body.log}','${req.body.pas}','${req.body.email}','${req.body.name}');`);
-		db.run(`INSERT INTO 'user' (log,pas,email,name) VALUES ('${req.body.log}','${req.body.pas}','${req.body.email}','${req.body.name}');`, function(err, row) {
+		db.run(`INSERT INTO 'user' (log,pas,email,name,status) VALUES ('${req.body.log}','${req.body.pas}','${req.body.email}','${req.body.name}','${req.body.stat}');`, function(err, row) {
 	  			if (!err){
 	  				db.each(`SELECT * FROM user WHERE log = '${req.body.log}'`, function(err, row) {
 				    	if (!err) {

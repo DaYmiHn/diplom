@@ -19,7 +19,7 @@ block content
           text-align: center;
           box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
         }
-        .form input {
+        .form input, select, option {
           font-family: "Roboto", sans-serif;
           outline: 0;
           background: #f2f2f2;
@@ -108,16 +108,21 @@ block content
     <div class="login-page">
       <div class="form">
         <form class="register-form">
-          <input type="text" placeholder="Имя"/>
-          <input type="text" placeholder="Логин"/>
-          <input type="password" placeholder="Пароль"/>
-          <input type="text" placeholder="Email"/>
+          <input id="reg_name" type="text" placeholder="Имя или название магазина"/>
+          <select id="reg_stat">
+            <option value="cur">Курьер</option>
+            <option value="cli">Клиент</option>
+            <option value="mag">Магазин</option>
+          </select>
+          <input id="reg_log" type="text" placeholder="Логин"/>
+          <input id="reg_pas" type="password" placeholder="Пароль"/>
+          <input id="reg_email" type="text" placeholder="Email"/>
           <button>создать</button>
           <p class="message">Уже с нами? <a>Войти</a></p>
         </form>
         <form class="login-form">
-          <input type="text" placeholder="Логин"/>
-          <input type="password" placeholder="Пароль" value="123"/>
+          <input id="log_log" type="text" placeholder="Логин"/>
+          <input id="log_pas" type="password" placeholder="Пароль" value="123"/>
           <button>войти</button>
           <p class="message">Не с нами? <a>Создать аккаунт</a></p>
         </form>
@@ -132,15 +137,15 @@ block content
 
             $('form.register-form > button').click(function(e){
                 e.preventDefault();
-                var name = $('body > div.login-page > div > form.register-form > input[type=text]:nth-child(1)').val();
-                var log = $('body > div.login-page > div > form.register-form > input[type=text]:nth-child(2)').val();
-                var pas = $('body > div.login-page > div > form.register-form > input[type=password]:nth-child(3)').val();
-                console.log(pas);
-                var email = $('body > div.login-page > div > form.register-form > input[type=text]:nth-child(4)').val();
+                var name = $('#reg_name').val();
+                var log = $('#reg_log').val();
+                var stat = $('#reg_stat').val();
+                var pas = $('#reg_email').val();
+                var email = $('#reg_email').val();
                 $.ajax({
                     url: 'api/user',
                     type: "POST",
-                    data: {log: log, pas: pas, email: email, name: name},
+                    data: {log: log, pas: pas, email: email, name: name,stat: stat},
                     success: function(data){
                         if(data == 'done') document.location.reload(true);
                       //- else alert("Неправильный логин или пароль!");
@@ -150,8 +155,8 @@ block content
             });
             $('form.login-form > button').click(function(e){
                 e.preventDefault();
-                var log = $('body > div.login-page > div > form.login-form > input[type=text]:nth-child(1)');
-                var pas = $('body > div.login-page > div > form.login-form > input[type=password]:nth-child(2)');
+                var log = $('#log_log');
+                var pas = $('#log_pas');
                 $.ajax({
                     url: 'api/user',
                     type: "GET",

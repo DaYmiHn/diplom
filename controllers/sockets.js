@@ -30,7 +30,7 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('new zakaz', function(data) {
     let sql = `INSERT INTO 'package' (id, address_A, address_B, cost, email, fast ,name ,options ,phone ,rules ,startTime ,status ,ves) 
-VALUES (NULL,'${data.address_A}','${data.address_B}','${data.cost}','${data.email}','${data.fast}','${data.name}','${data.options}','${data.phone}','${data.rules}','${data.startTime}','${data.status}','${data.ves}');`;
+VALUES (NULL,'${data.address_A}','${data.address_B}','${data.cost}','${data.email}','${data.fast}','${data.name}','${data.options}','${data.phone}','${data.rules}','${data.startTime}','created','${data.ves}');`;
     db.run(sql, (err, row) => {
       if (err) {
         console.error(err.message);
@@ -41,5 +41,37 @@ VALUES (NULL,'${data.address_A}','${data.address_B}','${data.cost}','${data.emai
     socket.emit('reload');
   });
 
+
+  socket.on('new tovar', function(data) {
+    var db = new sqlite3.Database('database.db');
+    db.serialize(function() {
+        let sql = `INSERT INTO 'product' (id, name, cost, image, mag) 
+    VALUES (NULL,'${data.tovar.name}','${data.tovar.cost}','${data.tovar.image}','${data.tovar.id_mag}');`;
+        db.run(sql, (err, row) => {
+          if (err) {
+            console.error(err.message);
+            console.error(sql);
+          } else{
+            console.log('Done');
+          }
+          db.close();
+        });
+    });
+      socket.emit('reload');
+    });
+
+
+  socket.on('upd status package', function(data) {
+    let sql = `UPDATE 'package' SET status = '${data.status}' WHERE id = ${data.id_pac};`;
+    db.run(sql, (err, row) => {
+      if (err) {
+        console.error(err.message );
+        console.error(sql);
+      } else{
+        console.log('Done');
+      }
+    });
+    socket.emit('reload');
+  });
 
 });
