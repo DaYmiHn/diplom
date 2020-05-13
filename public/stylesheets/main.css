@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700,900&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Bellota+Text:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Bellota+Text:400,500,700,900&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Playfair+Display&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
 html { overflow:  hidden;  position: relative;}
 #map_A, #map_B {
 
@@ -32,8 +32,9 @@ body{
     padding: 0;
     margin: 0;
     /*font-family: 'Roboto', sans-serif;*/
-    font-family: 'Bellota Text', cursive;
+    /*font-family: 'Bellota Text', cursive;*/
     /*font-family: 'Playfair Display', serif;*/
+    font-family: 'Open Sans', sans-serif;
 
 }
 header {
@@ -44,7 +45,7 @@ header {
     text-align: center;
     /*margin-bottom: 10px;*/
     padding: 0;
-    font-weight: 900;
+    /*font-weight: 900;*/
     color: white;
     font-size: 12pt;
 }
@@ -103,12 +104,12 @@ section{
 
 .sec_block{
     width: 900px;
-    height: calc(100vh - 60px);
+    /*height: calc(100vh - 60px);*/
     margin: 0 auto;
 }
 #send{
-    overflow: scroll;
-    overflow-x: hidden;
+    /*overflow: scroll;
+    overflow-x: hidden;*/
     /*overflow-y: hidden;*/
 }
 #shop{
@@ -208,7 +209,7 @@ h1 {
     font-size: 36px;
     margin-top: 20px;
     margin-bottom: 10px;
-    font-weight: 900;
+    /*font-weight: 900;*/
 }
 
 fieldset {
@@ -348,7 +349,7 @@ grid-column: span 4;
 
 .avatar{
     grid-column: 1;
-    grid-row: 2 span;
+    /*grid-row: 2 span;*/
     /*background-image: url("../images/rabota-kurerom-v-delivery-club-kak-ustroitsya-skolko-mozhno-zarabotat-otzyvy-sotrudnikov-3.jpg");*/
     background-position: center;
     background-size: cover;
@@ -365,6 +366,7 @@ grid-column: span 4;
     row-gap: 5px;
 }
 .zakaz{
+    overflow-y: scroll;
     grid-column: 2/5;
     grid-row: 2 span;
     /*border: 1px dashed black;*/
@@ -413,9 +415,11 @@ div.settings > input[type=button]:hover:before {
 }
 
 h1 {
-    font-weight: 900;
+    font-weight: 600;
 }
-
+#container > span{
+    font-family: 'Bellota Text', cursive;
+}
 
 .avatar{
     cursor: pointer;
@@ -453,13 +457,29 @@ h1 {
     grid-template-columns: repeat(12,1fr);
     grid-template-rows: repeat(6,1fr);
     padding: 10px;
+    position: relative;
 }
 .ava{
+    border-radius: 10px;
     height: 200px;
     width: 200px;
     background-size: cover; 
     grid-column: 3 span;
     grid-row: 6 span;
+}
+
+.item_title{
+    background-color: #ffffffb3;
+    border-radius: 10px;
+}
+.add_item{
+    background-color: #fff;
+    border-radius: 5px;
+    position: absolute;
+    bottom: -5px;
+    width: 100%;
+    border: 0.5px solid #cecece;
+
 }
 .name{
     grid-column: 9 span;
@@ -508,7 +528,7 @@ h1 {
     right: 0;
 }
 
-.modal{
+.modal-tovar,.modal-acc{
     background-color: #fff;
     top: 0;
     bottom: 0;
@@ -544,9 +564,11 @@ h1 {
   /*border: 1px solid #060;*/
 }
 .item_box {
-  border: 1px solid #999;
+  /*border: 1px solid #999;*/
   margin-bottom: 10px;
-  padding: 5px;
+  /*padding: 5px;*/
+  position: relative;
+  border-radius: 10px;
 }
 .shopping_list {
     width: 100%;

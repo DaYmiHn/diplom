@@ -2,22 +2,50 @@
 <div class="cabinet_block">
     <div class="avatar" title="Выбрать изображение" style="background-image: url(#{user.avatar})">
     </div>
-    <div class="info"> <h1> #{user.name}</h1>  </div>
+    <div class="info"> <h1 contenteditable="true"> #{user.name}</h1>  </div>
     <div class="settings">
         <input type="button" value="Выйти из профиля" onclick="exitUser()">
-        <input type="button" class="open-modal-btn" value="Создать товар">
-        <input type="button" value="Кнопка">
+        <input type="button" class="open-modal-btn-tovar" value="Создать товар">
+        <input type="button" class="open-modal-btn-acc" value="Изменить данные">
     </div>
-    <div class="zakaz">Доступные заказы</div>
     <div class="money">Заработанно за неделю: <br> <h1>4096 руб.</h1></div>
-    <div class="current">текущие заказы</div>
+    <div class="zakaz">Доступные заказы
+    each package in packages
+        if package.shop == user.id && package.status == 'moderate'
+            <button class="accordionA">Заказ №#{package.id}<input type="button" value="Подтвердить" data-id="#{package.id}"  data-status="created" class="updPackageStatus"></button>
+            <div class="panelA">
+              <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
+              <p>От: #{package.address_B} в #{package.endTime}</p>
+              <p>#{package.zakaz}</p>
+            </div>
+    </div>
+    <div class="money">Заработанно за месяц: <br> <h1>44042 руб.</h1></div>
+    <div class="current">текущие заказы
+    each package in packages
+        if package.shop == user.id && package.status == 'created'
+            <button class="accordionA">Заказ №#{package.id}<input type="button" value="Подтвердить" data-id="#{package.id}"  data-status="moderate" class="updPackageStatus"></button>
+            <div class="panelA">
+              <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
+              <p>От: #{package.address_B} в #{package.endTime}</p>
+              <p>#{package.zakaz}</p>
+            </div>
+    </div>
 </div>
 
 <div class="overlay" style="display: none;"></div>
-<div class="modal" style="display: none;">
-    <input type="text"><br>
-    <input type="text"><br>
-    <input type="text"><br>
+<div class="modal-tovar" style="display: none;">
+    <h1>Создать товар</h1>
+    <input type="text" placeholder="Наименование"><br>
+    <input type="text" placeholder="Цена"><br>
+    <input type="text" placeholder="Изображение"><br>
     <input type="button" value="Создать">
 </div>
 
+
+<div class="modal-acc" style="display: none;">
+    <h1>Изменить данные аккаунта</h1>
+    <input type="text" placeholder="Название магазина">
+    <input type="text" placeholder="Логин">
+    <input type="text" placeholder="Пароль">
+    <input type="button" id="updMag" value="Изменить"><br>
+</div>

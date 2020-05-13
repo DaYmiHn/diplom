@@ -10,94 +10,6 @@ let summ = {
   cart: 0     
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// let rast = setInterval( function() { 
-//     ymaps.ready(function () {
-//     var multiRoute = new ymaps.multiRouter.MultiRoute({
-//         referencePoints: [vm.model.address_A,
-//       vm.model.address_B],
-//         params: {
-//             routingMode: 'masstransit',
-//             results: "1"
-//         }
-//     }, {
-//         boundsAutoApply: false
-//     });
-
-//     var changeLayoutButton = new ymaps.control.Button({
-//         data: { content: "Изменить макет подписи для пеших сегментов"},
-//         options: { selectOnClick: true }
-//     });
-
-//     changeLayoutButton.events.add('select', function () {
-//         multiRoute.options.set(
-//             "routeWalkMarkerIconContentLayout",
-//             ymaps.templateLayoutFactory.createClass('{{ properties.duration.text }}')
-//         );
-//     });
-
-//     changeLayoutButton.events.add('deselect', function () {
-//         multiRoute.options.unset("routeWalkMarkerIconContentLayout");
-//     });
-
-//     var myMap = new ymaps.Map('map_A', {
-//         center: [59.940664, 30.316987],
-//         zoom: 12,
-//         controls: [changeLayoutButton]
-//     }, {
-//         buttonMaxWidth: 350
-//     });
-
-//     myMap.geoObjects.add(multiRoute);
-//     // var geoBounds = new YMaps.GeoCollectionBounds(); 
-
-//     multiRoute.model.events.add("requestsuccess", function() {
-
-//     myMap.setBounds(multiRoute.getBounds(),true);
-//     // var sred = multiRoute.getRoutes().get(0).properties.get("durationInTraffic").value + multiRoute.getRoutes().get(0).properties.get("duration").value
-//     // setTimeout(raschet, 3000, multiRoute.getRoutes().get(0).properties.get('distance').value, sred/2);
-//     var rasKm = Math.round(multiRoute.getRoutes().get(0).properties.get('distance').value/1000); //в метрах // км
-//     var durKm = Math.round(multiRoute.getRoutes().get(0).properties.get('duration').value/60); //в секундах // мин
-//     summ.rast = (rasKm+durKm)*2;
-//         });
-//     });
-//  } , 1000);
-
 let options = setInterval( function() { 
     if (vm.model.options === undefined) {summ.options = 0 }else{
 
@@ -138,9 +50,10 @@ var vm = new Vue({
         return {
             model: {
                 id: 1,
-                name: "John Doe",
+                name: "",
                 phone: "+7",
                 email: "john.doe@gmail.com",
+                zakaz: "посылка",
                 address_A : 'Россия, Санкт-Петербург, Тихорецкий проспект, 1к2',
                 address_B : 'Россия, Санкт-Петербург, Среднеохтинский проспект, 11к4'
                 
@@ -152,8 +65,7 @@ var vm = new Vue({
                     label: "Ваше имя 😺",
                     model: "name",
                     id: "name",
-                    placeholder: "User's name",
-                    validator: VueFormGenerator.validators.string
+                    placeholder: "User's name"
                 }, {
                     type: "input",
                     inputType: "text",
@@ -190,6 +102,7 @@ var vm = new Vue({
                     label: "Время забора",
                     model: "startTime",
                     id: "startTime",
+                    maxlength: 5,
                     placeholder: "09:00",
                     format: "HH:m",
                     dateTimePickerOptions: {
@@ -200,6 +113,7 @@ var vm = new Vue({
                     label: "и вручения посылки 🕐",
                     placeholder: "09:00",
                     model: "endTime",
+                    maxlength: 5,
                     id: "endTime",
                     format: "HH:m",
                     dateTimePickerOptions: {
@@ -211,7 +125,7 @@ var vm = new Vue({
                     label: "Её вес (кг.) 📦",
                     model: "ves",
                     id: "ves",
-                    min: 18,
+                    min: 1,
                     validator: VueFormGenerator.validators.number
                 }, {
                     type: "input",
@@ -226,15 +140,15 @@ var vm = new Vue({
                     inputType: "text",
                     label: "Точка А 🚩",
                     model: "address_A",
-                    id: 'address',
-                    multi: true
+                    id: 'address_a'
+                    // multi: true
                 }, {
                     type: "input",
                     inputType: "text",
                     label: "Точка Б 🏁",
                     model: "address_B",
-                    id: 'address_b',
-                    multi: true
+                    id: 'address_b'
+                    // multi: true
                 },{
                     type: "textArea",
                     label: "Комментарий",
@@ -333,13 +247,25 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
 
 
 var data;
-    $("#address, #address_b").suggestions({
+    $("#address_a,#address_b").suggestions({
         token: "2a590f083f301abfa0b8b944b982bf15b2d5d5a6",
         type: "ADDRESS",
         /* Вызывается, когда пользователь выбирает одну из подсказок */
         onSelect: function(suggestion) {
             data = suggestion;
+            vm.model.address_A = $("#address_a").val();
+            vm.model.address_B = $("#address_b").val();
             console.log(data);
             calculateAndDisplayRoute(directionsService, directionsRenderer);
         }
     });
+    // $("#address_b").suggestions({
+    //     token: "2a590f083f301abfa0b8b944b982bf15b2d5d5a6",
+    //     type: "ADDRESS",
+    //     /* Вызывается, когда пользователь выбирает одну из подсказок */
+    //     onSelect: function(suggestion) {
+    //         data = suggestion;
+    //         console.log(data);
+    //         calculateAndDisplayRoute(directionsService, directionsRenderer);
+    //     }
+    // });

@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
             // console.log(row);
             packages.push(row);    
           });
-          console.log(products);
+          // console.log(products);
           db.each(`SELECT * FROM user WHERE id = '${req.cookies['id']}'`, function(err, row) {
             // console.log(shops.products);
             res.render('index', { auth: 'true', shops: data, products: products, user: row, packages: packages});

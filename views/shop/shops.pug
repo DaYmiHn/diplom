@@ -1,14 +1,13 @@
 each shop in shops
 	<div class="block_shop_item overflow">
-	<img class="ava" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="#{shop.avatar}" alt="" style="background: #F1F1FA;">
+	<img class="ava" src="#{shop.avatar}"  alt="" style="background: #F1F1FA;">
 	<div class="name"><b>#{shop.name}</b></div>
-	<div class="tovars overflow">
+	<div class="tovars ">
 		each product in products
 			if product.mag == shop.id
-				<div class="tovar overflow item_box">
-					<span class="item_title"> #{product.name}</span> <br>
-					<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="#{shop.avatar}" alt="" style="width: 100px; height: 100px;"><br>
-					<input type="button" class="add_item" data-id="#{product.id}" data-cost="#{product.cost}" value="Купить за #{product.cost} руб.">	
+				<div class="tovar overflow item_box"  style="background-image: url(#{product.image}); background-size: 100% 100%; background-position: center; ">
+					<div class="item_title" style="text-align: center;"> #{product.name}</div> 
+					<input type="button" class="add_item" data-id="#{product.id}" data-id-shop="#{shop.id}" data-cost="#{product.cost}" value="Купить за #{product.cost} руб.">	
 				</div>
 	</div>
 	</div>

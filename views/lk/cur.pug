@@ -8,28 +8,32 @@
         <input type="button" value="Кнопка">
         <input type="button" value="Кнопка">
     </div>
-    <div class="zakaz overflow">Доступные заказы
-
+    <div class="money overflow">Заработанно за месяц: <br> <h1>50096 руб.</h1></div>
+    <div class="zakaz overflow" id="created">Доступные заказы
     each package in packages
         if package.status == 'created'
-            <button class="accordionA">Заказ №#{package.id}<input type="button" value="В работу" data-id="#{package.id}"  data-status="inwork" class="updPackageStatus"></button>
-            <div class="panelA">
-              <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
-              <p>От: #{package.address_A} в #{package.startTime}</p>
-              <p>От: #{package.address_B} в #{package.endTime}</p>
+            <div class="wrapperAcc">
+                <button class="accordionA">Заказ №#{package.id}<input type="button" value="В работу" data-id="#{package.id}"  data-status="inwork" class="updPackageStatus"></button>
+                <div class="panelA">
+                  <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
+                  <p>От: #{package.address_A} в #{package.startTime}</p>
+                  <p>От: #{package.address_B} в #{package.endTime}</p>
+                </div>
             </div>
     </div>
     <div class="money overflow">Заработанно за неделю: <br> <h1>4096 руб.</h1></div>
-    <div class="current overflow">Текущие заказы
+    <div class="current overflow" id="inwork">Текущие заказы
     each package in packages
         if package.status == 'inwork'
-            <button class="accordionA">Заказ №#{package.id}
-            <input type="button" value="Выполнено" data-id="#{package.id}"  data-status="done" class="updPackageStatus">
-            <input type="button" value="Отменить" data-id="#{package.id}"  data-status="created" class="updPackageStatus"></button>
-            <div class="panelA">
-              <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
-              <p>От: #{package.address_A} в #{package.startTime}</p>
-              <p>От: #{package.address_B} в #{package.endTime}</p>
+            <div class="wrapperAcc">
+                <button class="accordionA">Заказ №#{package.id}
+                <input type="button" value="Выполнено" data-id="#{package.id}"  data-status="done" class="updPackageStatus">
+                <input type="button" value="Отменить" data-id="#{package.id}"  data-status="created" class="updPackageStatus"></button>
+                <div class="panelA">
+                  <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
+                  <p>От: #{package.address_A} в #{package.startTime}</p>
+                  <p>От: #{package.address_B} в #{package.endTime}</p>
+                </div>
             </div>
     </div>
 </div>
