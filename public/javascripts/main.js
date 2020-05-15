@@ -1,18 +1,18 @@
 $(window).load(function(){
-    $(function(){
-        var transTime = 10000;
-        var numBgColors = $('.bg-grad').length;
-        var bgtrans = setInterval(function(){
-            if($('.bg-grad.active').index() == ($('.bg-grad').length-1)){
-                $('.bg-grad.active').removeClass('active');
-                $('.bg-grad').eq(0).addClass('active');
-            }else{
-                var curIndex = $('.bg-grad.active').index();
-                $('.bg-grad.active').removeClass('active');
-                $('.bg-grad').eq(curIndex+1).addClass('active');
-            }
-        },transTime);
-    });
+    // $(function(){
+    //     var transTime = 10000;
+    //     var numBgColors = $('.bg-grad').length;
+    //     var bgtrans = setInterval(function(){
+    //         if($('.bg-grad.active').index() == ($('.bg-grad').length-1)){
+    //             $('.bg-grad.active').removeClass('active');
+    //             $('.bg-grad').eq(0).addClass('active');
+    //         }else{
+    //             var curIndex = $('.bg-grad.active').index();
+    //             $('.bg-grad.active').removeClass('active');
+    //             $('.bg-grad').eq(curIndex+1).addClass('active');
+    //         }
+    //     },transTime);
+    // });
 
         // $("#shop").mCustomScrollbar({
         //     theme:"dark-3"
@@ -162,7 +162,8 @@ $('.overlay').click(function(){
     $('.overlay').hide();
     $('.modal-tovar').hide();
 });
-$('.modal-tovar input[type=button]').click(function(){
+$('.modal-tovar button').click(function(){
+    alert();
     let tovar = {
       name: '',  
       cost: '',  
@@ -341,17 +342,26 @@ $(document.body).on('click', '.updPackageStatus' ,function(){
     thisis.appendTo($('#'+$(this).attr("data-status")));
     let id_pac = $(this).attr("data-id");
     let id_cur = $('#id_user').val();
-    let status = $(this).attr("data-status");
+    let status;
+    if ($(this).attr("data-status") == "created-mag") status = 'created';
+    else status = $(this).attr("data-status");
     socket.emit('upd status package', { id_pac: id_pac, id_cur: id_cur, status: status});
     if ($(this).attr("data-status") == "inwork") {
         $(this).val('Выполнено');
         $(this).attr("data-status", "done");
 
         let el = $('<input type="button" value="Отменить"  data-status="created" class="updPackageStatus">').attr("data-id", $(this).attr("data-id"));
-        $(this).parent().append(el);
-    } else {
+        $(this).parent().append(el).show('slow');;
+    
+    } else if ($(this).attr("data-status") == "created"){
         $(this).parent().find('input[value="Отменить"]').val('В работу');
         $(this).attr("data-status", "inwork");
         $(this).parent().find('input[value="Выполнено"]').remove();
+    
+    } else if ($(this).attr("data-status") == "done"){
+        $(this).parent().parent().remove();
+
+    } else if ($(this).attr("data-status") == "created-mag"){
+        $(this).parent().parent().find('input[value="Подтвердить"]').remove();
     }
 });

@@ -50,12 +50,13 @@ var vm = new Vue({
         return {
             model: {
                 id: 1,
-                name: "",
+                name: " ",
                 phone: "+7",
                 email: "john.doe@gmail.com",
                 zakaz: "посылка",
                 address_A : 'Россия, Санкт-Петербург, Тихорецкий проспект, 1к2',
-                address_B : 'Россия, Санкт-Петербург, Среднеохтинский проспект, 11к4'
+                address_B : 'Россия, Санкт-Петербург, Среднеохтинский проспект, 11к4',
+                ves : 1
                 
             },
             schema: {
@@ -65,14 +66,19 @@ var vm = new Vue({
                     label: "Ваше имя 😺",
                     model: "name",
                     id: "name",
-                    placeholder: "User's name"
+                    placeholder: "Как к Вам обращаться?",
+                    required: true,
+                    readonly: true,
+                    validator: VueFormGenerator.validators.string
                 }, {
                     type: "input",
                     inputType: "text",
                     maxlength: 12,
+                    minlength: 12,
                     id: "phone",
                     label: "Телефон",
-                    model: "phone"
+                    model: "phone",
+                    required: true
                 }, {
                     type: "radios",
                     label: "Скорость доставки",
@@ -81,7 +87,8 @@ var vm = new Vue({
                         "Быстро 🐪",
                         "Очень быстро 🐴",
                         "Побить рекорды скорости 🐳💨"
-                    ]
+                    ],
+                    required: true
                 }, {
                     type: "checklist",
                     label: "Опции",
@@ -107,7 +114,8 @@ var vm = new Vue({
                     format: "HH:m",
                     dateTimePickerOptions: {
                         format: "HH:m"
-                    }
+                    },
+                    required: true
                 },{
                     type: "dateTimePicker",
                     label: "и вручения посылки 🕐",
@@ -118,7 +126,8 @@ var vm = new Vue({
                     format: "HH:m",
                     dateTimePickerOptions: {
                         format: "HH:m"
-                    }
+                    },
+                    required: true
                 }, {
                     type: "input",
                     inputType: "number",
@@ -126,6 +135,7 @@ var vm = new Vue({
                     model: "ves",
                     id: "ves",
                     min: 1,
+                    required: true,
                     validator: VueFormGenerator.validators.number
                 }, {
                     type: "input",
@@ -133,6 +143,7 @@ var vm = new Vue({
                     label: "Ваш E-mail 📧",
                     model: "email",
                     id: "email",
+                    required: true,
                     placeholder: "User's e-mail address",
                     validator: VueFormGenerator.validators.email
                 }, {
@@ -140,14 +151,16 @@ var vm = new Vue({
                     inputType: "text",
                     label: "Точка А 🚩",
                     model: "address_A",
-                    id: 'address_a'
+                    id: 'address_a',
+                    required: true
                     // multi: true
                 }, {
                     type: "input",
                     inputType: "text",
                     label: "Точка Б 🏁",
                     model: "address_B",
-                    id: 'address_b'
+                    id: 'address_b',
+                    required: true
                     // multi: true
                 },{
                     type: "textArea",

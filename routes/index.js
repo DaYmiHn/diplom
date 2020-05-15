@@ -23,7 +23,12 @@ router.get('/', function(req, res, next) {
           var packages = [];
           db.each(`SELECT * FROM package `, (err, row )=> {
             if(err) throw err;
-            // console.log(row);
+            row['zakaz'] = row['zakaz'].split(' ');
+            row['options'] = row['options'].split(',');
+            for (let key in row['zakaz']){
+              row['zakaz'][key] = row['zakaz'][key].split(',');
+            }
+            console.log(row);
             packages.push(row);    
           });
           // console.log(products);

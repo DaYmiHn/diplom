@@ -1,14 +1,53 @@
 <input id="inp" type='file' style="display: none;">
 <div class="cabinet_block">
-	<div class="avatar" title="Выбрать изображение" style="background-image: url(#{user.avatar})">
-	</div>
-	<div class="info"> <h1> #{user.name}</h1>  </div>
-	<div class="settings">
-		<input type="button" value="Выйти из профиля" onclick="exitUser()">
-		<input type="button" value="Написать в поддержку">
-		<input type="button" value="Кнопка">
-	</div>
-	<div class="zakaz">История заказов</div>
-	//- <div class="money">Заработанно за неделю: <br> <h1>4096 руб.</h1></div>
-	//- <div class="current">текущие заказы</div>
+    <div class="avatar" title="Выбрать изображение" style="background-image: url(#{user.avatar})">
+    </div>
+    <div class="info"> <h1> #{user.name}</h1>  </div>
+    <div class="settings">
+        <input type="button" value="Выйти из профиля" onclick="exitUser()">
+        <input type="button" value="Написать в поддержку">
+        <input type="button" value="Кнопка">
+    </div>
+    <div class="zakaz"><h3>История заказов:</h3>
+    each package in packages
+        if package.name == user.name
+            <div class="wrapperAcc">
+              <button class="accordionA">Заказ №#{package.id}<input type="button" value="#{package.status}"  class="updPackageStatus"></button>
+              <div class="panelA">
+                <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
+                <p>От: #{package.address_B} в #{package.endTime}</p>
+                if package.options[0] != 'undefined'
+                  <details>
+                    <summary>Опции</summary>
+                    <ul>
+                      each zakaz in package.options
+                        <li>#{zakaz}</li>
+                    </ul>
+                  </details>
+                <details>
+                <summary>Заказ</summary>
+                <table class="shopping_list">
+                   <tbody>
+                      <tr>
+                         <th>Наименование</th>
+                         <th>Цена</th>
+                         <th>Кол-во</th>
+                      </tr>
+                      each zakaz in package.zakaz
+                        if zakaz[0] != ''
+                          <tr>
+                             <td> #{zakaz[0]}</td>
+                             <td>#{zakaz[1]}</td>
+                             <td>#{zakaz[2]}</td>
+                          </tr>
+                   </tbody>
+                </table>
+              </details>
+
+                //- <p>#{package.zakaz[1][1]}</p>
+              </div>
+            </div>
+    </div>
+    //- <div class="money">Заработанно за неделю: <br> <h1>4096 руб.</h1></div>
+    //- <div class="current">текущие заказы</div>
 </div>

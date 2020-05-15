@@ -7,45 +7,179 @@
         <input type="button" value="Выйти из профиля" onclick="exitUser()">
         <input type="button" class="open-modal-btn-tovar" value="Создать товар">
         <input type="button" class="open-modal-btn-acc" value="Изменить данные">
+        <input type="button" class="open-modal-btn-edit" value="Изменить">
     </div>
     <div class="money">Заработанно за неделю: <br> <h1>4096 руб.</h1></div>
-    <div class="zakaz">Доступные заказы
+    <div class="zakaz"  id="moderate-mag"><h3>Доступные заказы</h3>
     each package in packages
         if package.shop == user.id && package.status == 'moderate'
-            <button class="accordionA">Заказ №#{package.id}<input type="button" value="Подтвердить" data-id="#{package.id}"  data-status="created" class="updPackageStatus"></button>
-            <div class="panelA">
-              <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
-              <p>От: #{package.address_B} в #{package.endTime}</p>
-              <p>#{package.zakaz}</p>
+            <div class="wrapperAcc">
+              <button class="accordionA">Заказ №#{package.id}<input type="button" value="Подтвердить" data-id="#{package.id}"  data-status="created-mag" class="updPackageStatus"></button>
+              <div class="panelA">
+                <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
+                <p>От: #{package.address_B} в #{package.endTime}</p>
+                if package.options[0] != 'undefined'
+                  <details>
+                    <summary>Опции</summary>
+                    <ul>
+                      each zakaz in package.options
+                        <li>#{zakaz}</li>
+                    </ul>
+                  </details>
+                <details>
+                <summary>Заказ</summary>
+                <table class="shopping_list">
+                   <tbody>
+                      <tr>
+                         <th>Наименование</th>
+                         <th>Цена</th>
+                         <th>Кол-во</th>
+                      </tr>
+                      each zakaz in package.zakaz
+                        if zakaz[0] != ''
+                          <tr>
+                             <td> #{zakaz[0]}</td>
+                             <td>#{zakaz[1]}</td>
+                             <td>#{zakaz[2]}</td>
+                          </tr>
+                   </tbody>
+                </table>
+              </details>
+
+                //- <p>#{package.zakaz[1][1]}</p>
+              </div>
             </div>
     </div>
     <div class="money">Заработанно за месяц: <br> <h1>44042 руб.</h1></div>
-    <div class="current">текущие заказы
+    <div class="current"  id="created-mag"><h3>Текущие заказы</h3>
     each package in packages
         if package.shop == user.id && package.status == 'created'
-            <button class="accordionA">Заказ №#{package.id}<input type="button" value="Подтвердить" data-id="#{package.id}"  data-status="moderate" class="updPackageStatus"></button>
+            <button class="accordionA" >Заказ №#{package.id}</button>
             <div class="panelA">
               <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
               <p>От: #{package.address_B} в #{package.endTime}</p>
-              <p>#{package.zakaz}</p>
+              <details>
+                <summary>Заказ</summary>
+                <table class="shopping_list">
+                   <tbody>
+                      <tr>
+                         <th>Наименование</th>
+                         <th>Цена</th>
+                         <th>Кол-во</th>
+                      </tr>
+                      each zakaz in package.zakaz
+                        if zakaz[0] != ''
+                          <tr>
+                             <td> #{zakaz[0]}</td>
+                             <td>#{zakaz[1]}</td>
+                             <td>#{zakaz[2]}</td>
+                          </tr>
+                   </tbody>
+                </table>
+              </details>
+
+              //- <p>#{package.zakaz[1][1]}</p>
             </div>
     </div>
 </div>
 
+
+block content
+    style.
+        @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+        .login-page {
+          width: 100%;
+          padding: 0;
+          margin: 0;
+        }
+        .form {
+        width: 100%;
+          padding: 0;
+          margin: 0;
+          //- position: relative;
+          //- z-index: 1;
+          background: #FFFFFF;
+          max-width: 360px;
+          margin: 0 auto 100px;
+          padding: 45px;
+          text-align: center;
+          box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+        .form input, select, option {
+          font-family: "Roboto", sans-serif;
+          outline: 0;
+          background: #f2f2f2;
+          width: 100%;
+          border: 0;
+          margin: 0 0 15px;
+          padding: 15px;
+          box-sizing: border-box;
+          font-size: 14px;
+        }
+        .form button {
+          font-family: "Roboto", sans-serif;
+          text-transform: uppercase;
+          outline: 0;
+          background: #4CAF50;
+          width: 100%;
+          border: 0;
+          padding: 15px;
+          color: #FFFFFF;
+          font-size: 14px;
+          -webkit-transition: all 0.3 ease;
+          transition: all 0.3 ease;
+          cursor: pointer;
+        }
+        .form button:hover,.form button:active,.form button:focus {
+          background: #43A047;
+        }
+        .form .message {
+          margin: 15px 0 0;
+          color: #b3b3b3;
+          font-size: 12px;
+        }
+        .form .message a {
+          color: #4CAF50;
+          text-decoration: none;
+        }
+        .form .register-form {
+          //- display: none;
+        }
+        body {
+          background: #76b852; /* fallback for old browsers */
+          background: -webkit-linear-gradient(right, #76b852, #8DC26F);
+          background: -moz-linear-gradient(right, #76b852, #8DC26F);
+          background: -o-linear-gradient(right, #76b852, #8DC26F);
+          background: linear-gradient(to left, #76b852, #8DC26F);
+          font-family: "Roboto", sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;      
+        }
+        a{
+          cursor:pointer;
+        }
+
 <div class="overlay" style="display: none;"></div>
-<div class="modal-tovar" style="display: none;">
-    <h1>Создать товар</h1>
-    <input type="text" placeholder="Наименование"><br>
-    <input type="text" placeholder="Цена"><br>
-    <input type="text" placeholder="Изображение"><br>
-    <input type="button" value="Создать">
-</div>
 
 
-<div class="modal-acc" style="display: none;">
-    <h1>Изменить данные аккаунта</h1>
+<div class="register-form form modal-acc" style="display: none;">
+  <h2>Изменить данные аккаунта</h2>
     <input type="text" placeholder="Название магазина">
     <input type="text" placeholder="Логин">
     <input type="text" placeholder="Пароль">
-    <input type="button" id="updMag" value="Изменить"><br>
+    <button id="updMag">Изменить</button>
 </div>
+        
+<div class="register-form form modal-tovar" style="display: none;">
+  <h1>Создать товар</h1>
+    <input type="text" placeholder="Наименование"><br>
+    <input type="text" placeholder="Цена"><br>
+    <input type="text" placeholder="Изображение"><br>
+    <button id="updMag">Создать</button>
+</div>
+
+
+//- <div class="register-form form modal-edit" style="display: none;">
+//-   include editTovar
+//- </div>

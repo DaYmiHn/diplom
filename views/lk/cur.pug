@@ -24,7 +24,7 @@
     <div class="money overflow">Заработанно за неделю: <br> <h1>4096 руб.</h1></div>
     <div class="current overflow" id="inwork">Текущие заказы
     each package in packages
-        if package.status == 'inwork'
+        if package.status == 'inwork' && package.performing == user.id
             <div class="wrapperAcc">
                 <button class="accordionA">Заказ №#{package.id}
                 <input type="button" value="Выполнено" data-id="#{package.id}"  data-status="done" class="updPackageStatus">

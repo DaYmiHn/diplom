@@ -1,10 +1,21 @@
 extends base.pug
 
 block content
+    if user.status == 'cli'
+        style.
+              header{grid-template-columns: auto 1fr 1fr 1fr auto;}
+    if user.status == 'mag'
+        style.
+              header{grid-template-columns: auto 1fr 1fr auto;}
+    if user.status == 'cur'
+        style.
+              header{grid-template-columns: auto 1fr auto;}
     <header>
       <div> </div>
-      <div class="header_item send"><p>ОТПРАВИТЬ ПОСЫЛКУ</p></div>
-      <div class="header_item shop" ><p>МАГАЗИНЫ</p></div>
+      if user.status == 'mag' || user.status == 'cli'
+        <div class="header_item send"><p>ОТПРАВИТЬ ПОСЫЛКУ</p></div>
+      if user.status == 'cli'
+        <div class="header_item shop" ><p>МАГАЗИНЫ</p></div>
       <div class="header_item cabinet"><p>ЛИЧНЫЙ КАБИНЕТ</p></div>
       <div></div>
     </header>

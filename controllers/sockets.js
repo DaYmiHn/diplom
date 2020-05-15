@@ -43,12 +43,13 @@ io.sockets.on('connection', function(socket) {
 
       for (let key in results){
         let sql = `INSERT INTO 'package' (id, address_A, address_B, cost, email, fast ,name ,options ,phone  ,startTime, endTime ,status ,ves, zakaz, shop) 
-    VALUES (NULL,'${data.address_A}','${data.address_B}','${data.cost}','${data.email}','${data.fast}','${data.name}','${data.options}','${data.phone}','${data.startTime}','${data.endTime}','moderate','${data.ves}','${results[key][0]}','${key}');`;
+    VALUES (NULL,'${data.address_A}','${data.address_B}','${data.cost}','${data.email}','${data.fast}','${data.name}','${data.options}','${data.phone}','${data.startTime}','${data.endTime}','moderate','${data.ves}','${results[key]}','${key}');`;
         db.run(sql, (err, row) => {
           if (err) {
             console.error(err.message);
           } else{
             console.log('Done');
+            console.log(sql);
           }
         });
         // console.log(results[key]);
@@ -89,7 +90,13 @@ io.sockets.on('connection', function(socket) {
 
 
   socket.on('upd status package', function(data) {
-    let sql = `UPDATE 'package' SET status = '${data.status}' WHERE id = ${data.id_pac};`;
+    let performing;
+    if (data.status == 'inwork') {
+      performing = data.id_cur; 
+    } else {
+      performing = 'NULL'; 
+    }
+    let sql = `UPDATE 'package' SET status = '${data.status}', performing = ${performing} WHERE id = ${data.id_pac};`;
     db.run(sql, (err, row) => {
       if (err) {
         console.error(err.message );
