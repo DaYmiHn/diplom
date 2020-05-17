@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
           var products = [];
           db.each(`SELECT * FROM product `, (err, row )=> {
             if(err) throw err;
-            // console.log(row);
+            console.log(row);
             products.push(row);    
           });
           var packages = [];
@@ -28,7 +28,7 @@ router.get('/', function(req, res, next) {
             for (let key in row['zakaz']){
               row['zakaz'][key] = row['zakaz'][key].split(',');
             }
-            console.log(row);
+            // console.log(row);
             packages.push(row);    
           });
           // console.log(products);

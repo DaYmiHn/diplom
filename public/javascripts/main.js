@@ -44,6 +44,9 @@ jQuery(function($) {
 $('.avatar').click(function(){
     $('#inp').trigger('click');
 });
+$('#cabinet > div.register-form.form.modal-tovar > input[type=text]:nth-child(6)').click(function(){
+    $('#inp_tov').trigger('click');
+});
 
 
 function readFile() {
@@ -55,7 +58,20 @@ function readFile() {
     FR.readAsDataURL( this.files[0] );
   }
 }
+function readFileTov() {
+  if (this.files && this.files[0]) {
+    var FR= new FileReader();
+    FR.addEventListener("load", function(e) {
+        $('#cabinet > div.register-form.form.modal-tovar > input[type=text]:nth-child(6)').val(e.target.result);
+    }); 
+    FR.readAsDataURL( this.files[0] );
+  }
+}
 document.getElementById("inp").addEventListener("change", readFile);
+if ($('#status_user').val() == 'mag') {
+            document.getElementById("inp_tov").addEventListener("change", readFileTov);
+
+}
 
 
 // `address_A` TEXT,
@@ -103,6 +119,24 @@ $('div.form-group.valid.field-submit > div > input[type=submit]').click(function
     // } else {
     //     cartZak = JSON.stringify(cartData);
     // }
+    if ($('#phone').val() == '' || $('#phone').val() == '+7' || $('#phone').val().length != 12 ||
+        $('#startTime').val() == ''  || $('#startTime').val().length != 5 ||
+        $('#endTime').val() == ''  || $('#endTime').val().length != 5
+        ) {
+        if ($('#phone').val() == '' || $('#phone').val() == '+7' || $('#phone').val().length != 12) {
+            $('#phone').parent().parent().parent().addClass('error').append('<div class="errors help-block"><span>Это поле обязательное!</span></div>');
+            
+        }
+
+        if ($('#startTime').val() == ''  || $('#startTime').val().length != 5) {
+            $('#startTime').parent().parent().parent().addClass('error').append('<div class="errors help-block"><span>Это поле обязательное!</span></div>');
+        }
+        if ($('#endTime').val() == ''  || $('#endTime').val().length != 5) {
+            $('#endTime').parent().parent().parent().addClass('error').append('<div class="errors help-block"><span>Это поле обязательное!</span></div>');
+        }    
+            alert('Исправьте выделенные поля!');    
+            return;
+    }
     let isBoss = confirm("Вы уверены что готовы сделать заказ?");
     if (!isBoss) return;
     socket.emit('new zakaz', {  address_A: vm.model.address_A, 

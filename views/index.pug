@@ -100,6 +100,7 @@ block content
 
     <section id="cabinet" class="overflow sec_block">
     <input type="hidden" value="#{user.id}" id="id_user">
+    <input type="hidden" value="#{user.status}" id="status_user">
    
       if user.status == 'cli' 
         include lk/cli
@@ -120,9 +121,10 @@ block content
       <div class="bg-grad five"></div>
       <div class="bg-grad six"></div>
     </div>
-
+    
     script.
         window.onload = function() {
+        $('#--1').click();
            vm.model.name = "#{user.name}".replace("&amp;", "&");;
         };
         function exitUser(){
