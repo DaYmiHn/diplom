@@ -3,18 +3,20 @@ extends base.pug
 block content
     if user.status == 'cli'
         style.
-              header{grid-template-columns: auto 1fr 1fr 1fr auto;}
+              header{grid-template-columns: auto 300px 300px 300px auto;}
     if user.status == 'mag'
         style.
-              header{grid-template-columns: auto 1fr 1fr auto;}
+              header{grid-template-columns: auto 450px 450px  auto;}
+              .header_item {border-left:1px solid #383838;}
     if user.status == 'cur'
         style.
-              header{grid-template-columns: auto 1fr auto;}
+              header{grid-template-columns: auto 900px auto;}
+              .header_item {border-left:1px solid #383838;}
     <header>
       <div> </div>
-      if user.status == 'mag' || user.status == 'cli'
-        <div class="header_item send"><p>ОТПРАВИТЬ ПОСЫЛКУ</p></div>
       if user.status == 'cli'
+        <div class="header_item send"><p>ОТПРАВИТЬ ПОСЫЛКУ</p></div>
+      if user.status == 'cli' || user.status == 'mag' 
         <div class="header_item shop" ><p>МАГАЗИНЫ</p></div>
       <div class="header_item cabinet"><p>ЛИЧНЫЙ КАБИНЕТ</p></div>
       <div></div>
@@ -150,6 +152,7 @@ block content
                       var lat = e.target._latlng.lat.toFixed(3),
                           lng = e.target._latlng.lng.toFixed(3);
                       console.log(lat + ", "+lng);
+                      
                       locationInfo.innerHTML = lat + ', ' + lng;
                   });
               });

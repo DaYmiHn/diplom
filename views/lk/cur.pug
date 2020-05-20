@@ -2,27 +2,44 @@
 <div class="cabinet_block">
     <div class="avatar overflow" title="Выбрать изображение" style="background-image: url(#{user.avatar})">
     </div>
-    <div class="info overflow"> <h1> #{user.name}</h1>  </div>
+    <div class="info overflow"> <h1 contenteditable="true">#{user.name}</h1>  </div>
     <div class="settings overflow">
         <input type="button" value="Выйти из профиля" onclick="exitUser()">
         <input type="button" value="Кнопка">
         <input type="button" value="Кнопка">
     </div>
-    <div class="money overflow">Заработанно за месяц: <br> <h1>50096 руб.</h1></div>
-    <div class="zakaz overflow" id="created">Доступные заказы
+    <div class="massanger">
+      center
+        img(src="mail.svg", alt="", width="60px", height="60px")
+        <h3>Почта</h3>
+        <div id="circle"></div>
+    </div>
+    //- <div class="money overflow">Заработанно за месяц: <br> <h1>50096 руб.</h1></div>
+    <div class="money overflow" >Заработанно за неделю: <h3 style="margin-top: 7px;">4096 руб.</h3></div>
+    <div class="zakaz overflow" id="created"><b>Доступные заказы</b>
     each package in packages
         if package.status == 'created'
             <div class="wrapperAcc">
-                <button class="accordionA">Заказ №#{package.id}<input type="button" value="В работу" data-id="#{package.id}"  data-status="inwork" class="updPackageStatus"></button>
+                <button class="accordionA">Заказ №#{package.id}<input type="button" value="В работу" data-id="#{package.id}"  data-status="inwork" class="google_but updPackageStatus"></button>
                 <div class="panelA">
                   <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
-                  <p>От: #{package.address_A} в #{package.startTime}</p>
-                  <p>От: #{package.address_B} в #{package.endTime}</p>
+                  if package.zakaz == 'посылка'
+                    <p>От: #{package.address_A} в #{package.startTime}</p>
+                  <p>До: #{package.address_B} 
+                  if package.zakaz == 'посылка'
+                    | в #{package.endTime}</p>
+                  if package.options[0] != 'undefined'
+                    <details>
+                      <summary>Опции</summary>
+                      <ul>
+                        each zakaz in package.options
+                          <li>#{zakaz}</li>
+                      </ul>
+                    </details>
                 </div>
             </div>
     </div>
-    <div class="money overflow">Заработанно за неделю: <br> <h1>4096 руб.</h1></div>
-    <div class="current overflow" id="inwork">Текущие заказы
+    <div class="current overflow" id="inwork"><b>Текущие заказы</b>
     each package in packages
         if package.status == 'inwork' && package.performing == user.id
             <div class="wrapperAcc">
@@ -32,10 +49,13 @@
                 <div class="panelA">
                   <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
                   <p>От: #{package.address_A} в #{package.startTime}</p>
-                  <p>От: #{package.address_B} в #{package.endTime}</p>
+                  <p>До: #{package.address_B} в #{package.endTime}</p>
                 </div>
             </div>
     </div>
 </div>
-
+<div class="overlay" style="display: none;"></div>
+<div id="messenger" style="display: none;">
+  iframe(src="", frameborder="0")
+</div>
 

@@ -119,23 +119,31 @@ $('div.form-group.valid.field-submit > div > input[type=submit]').click(function
     // } else {
     //     cartZak = JSON.stringify(cartData);
     // }
-    if ($('#phone').val() == '' || $('#phone').val() == '+7' || $('#phone').val().length != 12 ||
+    $('input').click(function(){
+        $(this).parent().parent().parent().removeClass('error');
+        $(this).parent().parent().parent().find('.help-block').remove();
+
+    });
+    if (summ.cart == 0) {
+        if ($('#phone').val() == '' || $('#phone').val() == '+7' || $('#phone').val().length != 12 ||
         $('#startTime').val() == ''  || $('#startTime').val().length != 5 ||
         $('#endTime').val() == ''  || $('#endTime').val().length != 5
         ) {
-        if ($('#phone').val() == '' || $('#phone').val() == '+7' || $('#phone').val().length != 12) {
-            $('#phone').parent().parent().parent().addClass('error').append('<div class="errors help-block"><span>Это поле обязательное!</span></div>');
-            
+            if ($('#phone').val() == '' || $('#phone').val() == '+7' || $('#phone').val().length != 12) {
+                $('#phone').parent().parent().parent().addClass('error').append('<div class="errors help-block"><span>Это поле обязательное!</span></div>');
+                
+            }
+
+            if ($('#startTime').val() == ''  || $('#startTime').val().length != 5) {
+                $('#startTime').parent().parent().parent().addClass('error').append('<div class="errors help-block"><span>Это поле обязательное!</span></div>');
+            }
+            if ($('#endTime').val() == ''  || $('#endTime').val().length != 5) {
+                $('#endTime').parent().parent().parent().addClass('error').append('<div class="errors help-block"><span>Это поле обязательное!</span></div>');
+            }    
+                alert('Исправьте выделенные поля!');    
+                return;
         }
 
-        if ($('#startTime').val() == ''  || $('#startTime').val().length != 5) {
-            $('#startTime').parent().parent().parent().addClass('error').append('<div class="errors help-block"><span>Это поле обязательное!</span></div>');
-        }
-        if ($('#endTime').val() == ''  || $('#endTime').val().length != 5) {
-            $('#endTime').parent().parent().parent().addClass('error').append('<div class="errors help-block"><span>Это поле обязательное!</span></div>');
-        }    
-            alert('Исправьте выделенные поля!');    
-            return;
     }
     let isBoss = confirm("Вы уверены что готовы сделать заказ?");
     if (!isBoss) return;
@@ -197,7 +205,7 @@ $('.overlay').click(function(){
     $('.modal-tovar').hide();
 });
 $('.modal-tovar button').click(function(){
-    alert();
+    // alert();
     let tovar = {
       name: '',  
       cost: '',  
@@ -255,10 +263,31 @@ $('#cabinet > div.cabinet_block > div.info > h1').bind( 'DOMSubtreeModified',fun
 
 
 
+$('#cabinet > div.cabinet_block > div.settings > input.open-modal-btn-edit').click(function(){
+    $('.overlay').show();
+    $('.modal-tovar-edit').show();
+});
+
+$('.overlay').click(function(){
+    $('.overlay').hide();
+    $('.modal-tovar-edit').hide();
+});
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+$('#cabinet > div.cabinet_block > div.massanger > center > img').click(function(){
+    $('.overlay').show();
+    $('#messenger').show();
+});
+
+$('.overlay').click(function(){
+    $('.overlay').hide();
+    $('#messenger').hide();
+});
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var cartData=getCartData() || {};
 var d = document,
@@ -353,7 +382,7 @@ $('#checkout').click(function(){
     // summ.ves = 1;
     summ.rast = 1;
     vm.model.ves = 10;
-    vm.model.address_A = 'Санкт-Петербург, проспект Авиаконструкторов 28, лит А';
+    vm.model.address_A = 'г Санкт-Петербург, пр-кт Авиаконструкторов, д 28 ';
     vm.model.zakaz = JSON.stringify(cartData);
     $('.send').trigger("click");
     $('.form-group')[8].remove();
@@ -398,4 +427,33 @@ $(document.body).on('click', '.updPackageStatus' ,function(){
     } else if ($(this).attr("data-status") == "created-mag"){
         $(this).parent().parent().find('input[value="Подтвердить"]').remove();
     }
+});
+
+$('#messenger > iframe').attr("src",'mess/index.html?id='+$('#id_user').val().toString());
+
+setInterval(()=>{
+    $('#circle').fadeToggle(400);
+},500);
+
+$('.openDisput').click(function(event){
+    // event.preventDefault();
+    document.querySelector("#messenger > iframe").src = document.querySelector("#messenger > iframe").src;
+    socket.emit('new disput', { id_user: $("#id_user").val(), id_pac: $(this).attr('data-id')}, function(err, success) {
+        $('#cabinet > div.cabinet_block > div.massanger > center > img').click();
+    });
+    // alert($(this).attr('data-id'));
+});
+
+
+$('.donePackage').on('click', function(){
+    let prov = confirm("Вы уверены что хотите завершить заказ №"+$(this).attr('data-id')+"?");
+    if (prov) {
+        socket.emit('finish package', {id:$(this).attr('data-id')},()=>{
+            $(this).parent().parent().remove();
+        });
+    } 
+
+
+
+    return false
 });

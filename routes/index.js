@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
           var products = [];
           db.each(`SELECT * FROM product `, (err, row )=> {
             if(err) throw err;
-            console.log(row);
+            // console.log(row);
             products.push(row);    
           });
           var packages = [];
@@ -31,10 +31,21 @@ router.get('/', function(req, res, next) {
             // console.log(row);
             packages.push(row);    
           });
+
+          var edit;
+          db.all(`SELECT id,name,cost FROM product `, (err, row )=> {
+            edit = row;
+            
+          });
+
+
+
+
+
           // console.log(products);
           db.each(`SELECT * FROM user WHERE id = '${req.cookies['id']}'`, function(err, row) {
             // console.log(shops.products);
-            res.render('index', { auth: 'true', shops: data, products: products, user: row, packages: packages});
+            res.render('index', { auth: 'true', shops: data, products: products, user: row, packages: packages, edit:JSON.stringify(edit)});
             // delete shops;
           });
       });
@@ -46,5 +57,62 @@ router.get('/', function(req, res, next) {
 router.get('/reg/:name', function(req, res, next) {
   	res.render('index', { name: req.params['name'] });
 });
+
+
+
+
+
+
+
+
+
+
+
+router.get('/api', function(req, res, next) {
+    
+    db.all(`SELECT id,name,cost FROM product `, (err, row )=> {
+      // if(err) throw err;
+      // // console.log(row);
+      // var products = row;  
+      res.render('table', {
+        title: 'Title',
+        products: JSON.stringify(row)
+      });
+    });
+    // console.log(JSON.stringify(products));
+});
+
+
+
+router.get('/getTov', function(req, res, next) {
+    var products = [];
+    db.all(`SELECT * FROM product `, (err, row )=> {
+        
+    res.send(row); 
+    });
+});
+
+
+
+
+
+
+
+router.post('/api', function(req, res, next) {
+    console.log(req.body);
+    res.send(req.body.value); 
+});
+
+
+
+router.get('/shop/:shop', function(req, res, next) {
+    // console.log(req.body);
+    res.render('shop/shops');
+});
+
+
+
+
+
 module.exports = router;
 

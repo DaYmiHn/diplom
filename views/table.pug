@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="http://www.appelsiini.net/download/jquery.jeditable.mini.js"></script>
+    link(rel='stylesheet', href='/stylesheets/table.css')
+</head>
+<body>
+    
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Cost</th>
+            </tr>
+        </thead>
+
+    </table>
+script.
+    var dataSet = JSON.parse('!{products}'.replace(/&quot;/g,'"'));;
+    var table;
+    $(document).ready(function() {
+         table = $('#example').DataTable( {
+        columns: [
+            { data: 'id' },
+            { data: 'name' },
+            { data: 'cost' }
+        ]
+    } );
+        // console.log(table.data());
+        table.rows.add(dataSet);
+        table.draw();
+        table.$('td:not(:first-child)').editable( 'http://localhost:8081/api/tovar/update', {
+            "callback": function( sValue, y ) {
+                var aPos = table.cell( this ).index();
+                //- table.fnUpdate( sValue, aPos.row, aPos.column );
+                table.cell(this).data(sValue).draw();
+            },
+            "submitdata": function ( value, settings ) {
+                var pos = table.cell( this ).index();
+                return {
+                    "column": table.column(this).index(),
+                    "id_pac": table.cell(pos.row, 0).data()
+                };
+            },
+            "height": "14px",
+            "width": "100%"
+        } );
+    } );
+</body>
+</html>
+
+
+

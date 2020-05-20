@@ -34,7 +34,7 @@ block content
           font-family: "Roboto", sans-serif;
           text-transform: uppercase;
           outline: 0;
-          background: #4CAF50;
+          background: #f18609;
           width: 100%;
           border: 0;
           padding: 15px;
@@ -45,7 +45,7 @@ block content
           cursor: pointer;
         }
         .form button:hover,.form button:active,.form button:focus {
-          background: #43A047;
+          background: #d8790b;
         }
         .form .message {
           margin: 15px 0 0;
@@ -53,7 +53,7 @@ block content
           font-size: 12px;
         }
         .form .message a {
-          color: #4CAF50;
+          color: #f18609;
           text-decoration: none;
         }
         .form .register-form {
@@ -93,11 +93,7 @@ block content
           color: #EF3B3A;
         }
         body {
-          background: #76b852; /* fallback for old browsers */
-          background: -webkit-linear-gradient(right, #76b852, #8DC26F);
-          background: -moz-linear-gradient(right, #76b852, #8DC26F);
-          background: -o-linear-gradient(right, #76b852, #8DC26F);
-          background: linear-gradient(to left, #76b852, #8DC26F);
+          
           font-family: "Roboto", sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;      
@@ -140,7 +136,7 @@ block content
                 var name = $('#reg_name').val();
                 var log = $('#reg_log').val();
                 var stat = $('#reg_stat').val();
-                var pas = $('#reg_email').val();
+                var pas = $('#reg_pas').val();
                 var email = $('#reg_email').val();
                 $.ajax({
                     url: 'api/user',

@@ -91,7 +91,7 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('upd status package', function(data) {
     let performing;
-    if (data.status == 'inwork') {
+    if (data.status == 'inwork' || data.status == 'done') {
       performing = data.id_cur; 
     } else {
       performing = 'NULL'; 
@@ -146,5 +146,125 @@ io.sockets.on('connection', function(socket) {
       socket.emit('reload');
     }
   });
+
+
+  //=============================CHAT======================================================
+  socket.on('get all mess', function(data) {
+    let sql = `SELECT * FROM 'chat' WHERE n_zak = ${data.id_dialog};`;
+    var arr = [];
+    console.log(sql);
+    db.each(sql, (err, row) => {
+      if (data.id_user == row['sender']) {
+        arr.push('<div class="msg messageSent">'+row['mess']+'\<i class="material-icons readStatus">done_all</i><span class="timestamp">'+row['time']+'</span></div> -->');
+      }else{
+        arr.push('<div class="msg messageReceived">'+row['mess']+'\<span class="timestamp">'+row['time']+'</span><span class="status_user">'+row['status_sender']+'</span></div> -->');
+      }
+    },()=>{
+      socket.emit('set all mess', {messages: arr});
+    });
+    // console.log(arr);
+  });
+  socket.on('get all dialog', function(data) {
+    let sql = `SELECT DISTINCT n_zak FROM 'chat' WHERE sender = ${data.id};`;
+    console.error(sql);
+    var arr = [];
+    db.each(sql, (err, row) => {
+      arr.push('<div class="chatButton" data-id="'+row['n_zak']+'"> <div class="chatInfo"> <div class="image"> </div> <p class="name">Диспут №'+row['n_zak']+' </p> <p class="message">Wow!</p> </div>  </div>');
+    },()=>{
+      socket.emit('set all dialog', {dialogs: arr});
+    });
+    // console.log(arr);
+  });
+
+  socket.on('add mess', function(data, callback) {
+    let sql = `SELECT * FROM user WHERE id = ${data.id_user};`;
+    // console.log(sql);
+    var status = '';
+    db.each(sql, (err, row) => {
+      // console.log(row);
+      switch (row['status']) {
+        case 'cur':
+          status = "Курьер #"+row['id'];
+          break;
+        case 'mag':
+          status = "Магазин #"+row['id'];
+          break;
+        case 'cli':
+          status = "Клиент #"+row['id'];
+          break;
+      }
+      let sql = `INSERT INTO 'chat' (mess, n_zak, sender, time, status_sender) VALUES ('${data.message}','${data.id_dialog}','${data.id_user}','${data.time}','${status}');`;
+      db.run(sql, (err, row) => {
+        socket.broadcast.emit('show new mess',  {arr:data, stat:status});
+        callback();
+      });
+    });
+  });
+
+
+
+socket.on('new disput', function(data, callback) {
+  let sql = `SELECT * FROM 'chat' WHERE n_zak = ${data.id_pac};`;
+  db.all(sql, (err, row) => {
+    console.log(row);
+    if (row.length == 0) {
+      let sql = `SELECT * FROM 'package' WHERE id = ${data.id_pac};`;
+      db.each(sql, (err, row) => {
+        let time = new Date().toString().substr(16, 5);
+        db.serialize(function() {
+          db.run(` INSERT INTO chat(mess,n_zak,sender,time,status_sender) VALUES ('Клиент создал диспут по заказу №${data.id_pac}',${data.id_pac},${data.id_user},'${time}','');`);
+          if (row['shop']) 
+          db.run(`INSERT INTO chat(mess,n_zak,sender,time,status_sender) VALUES ('Магазин присоединился',${data.id_pac},${row['shop']},'${time}','');`);
+          
+          db.run(`INSERT INTO chat(mess,n_zak,sender,time,status_sender) VALUES ('Курьер присоединился',${data.id_pac},${row['performing']},'${time}','');`,()=>{
+            callback();
+          });
+        });
+      });
+      
+    } else {
+      callback();
+    }
+  });
+});
+
+
+
+socket.on('finish package', function(data, callback) {
+  let sql = `UPDATE 'package' SET status = 'finished' WHERE id = ${data.id};`;
+  db.run(sql, (err, row) => {
+    if (err) {
+      console.error(err.message );
+      console.error(sql);
+    } else{
+      console.log('Done');
+      callback();
+    }
+  });
+  // socket.emit('reload');
+});
+
+
+socket.on('remove disput', function(data, callback) {
+  let sql = `DELETE FROM chat WHERE n_zak = ${data.id};`;
+  console.log(sql);
+  db.run(sql, (err, row) => {
+    if (err) {
+      console.error(err.message );
+      console.error(sql);
+    } else{
+      console.log('Done');
+      callback();
+    }
+  });
+  // socket.emit('reload');
+});
+
+
+
+
+
+
+
 
 });

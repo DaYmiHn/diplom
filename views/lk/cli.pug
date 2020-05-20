@@ -2,20 +2,46 @@
 <div class="cabinet_block">
     <div class="avatar" title="Выбрать изображение" style="background-image: url(#{user.avatar})">
     </div>
-    <div class="info"> <h1> #{user.name}</h1>  </div>
-    <div class="settings">
+    <div class="info"> <h1 contenteditable="true">#{user.name}</h1></div>
+    <div class="settings" style="grid-template-rows: repeat(1, 1fr);">
         <input type="button" value="Выйти из профиля" onclick="exitUser()">
-        <input type="button" value="Написать в поддержку">
-        <input type="button" value="Кнопка">
+        //- <input type="button" value="Написать в поддержку">
+        //- <input type="button" value="Кнопка">
     </div>
-    <div class="zakaz"><h3>История заказов:</h3>
+    <div class="massanger">
+      center
+        img(src="mail.svg", alt="", width="60px", height="60px")
+        <h3>Почта</h3>
+        <div id="circle"></div>
+    </div>
+    <div class="money overflow">Это просто пустой<h3 style="margin-top: 7px;">блок</h3></div>
+    <div class="zakaz" style="grid-row: 5 span;"><h3>История заказов:</h3>
     each package in packages
-        if package.name == user.name
+        if package.name == user.name && package.status != 'finished' 
             <div class="wrapperAcc">
-              <button class="accordionA">Заказ №#{package.id}<input type="button" value="#{package.status}"  class="updPackageStatus"></button>
+              <button class="accordionA">Заказ №#{package.id}
+              <input type="button" data-id="#{package.id}" value="Открыть диспут" class="openDisput google_but " style="cursor:pointer;">
+              
+              if package.status == 'done'
+                <input type="button" data-id="#{package.id}" value="Завершить?"   class="donePackage google_but " title="Если вы получили заказ в целости и сохранности то нажмите на эту кнопку, подтверждая что вы удовлетворенны нашим сервисом, либо откройте диспут" style="cursor:pointer;">
+              if package.status == 'inwork'
+                <input type="button" value="Передано курьеру"  class="updPackageStatus google_but ">
+              if package.status == 'moderate'
+                <input type="button" value="Ожидает подтверждения"  class="updPackageStatus google_but ">
+              if package.status == 'created'
+                <input type="button" value="Ожидает курьера"  class="updPackageStatus google_but ">
+              //-     var status = 'Если посылка доставленна, нажмите что бы завершить заказ'
+              
+              </button>
               <div class="panelA">
                 <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
-                <p>От: #{package.address_B} в #{package.endTime}</p>
+                if package.address_A != 'undefined'
+                  <p>От: #{package.address_A}
+                  if package.startTime != 'undefined'
+                    |в #{package.startTime}</p>
+                <p>До: #{package.address_B} 
+                if package.endTime != 'undefined'
+                    |в #{package.endTime}</p>
                 if package.options[0] != 'undefined'
                   <details>
                     <summary>Опции</summary>
@@ -26,22 +52,25 @@
                   </details>
                 <details>
                 <summary>Заказ</summary>
-                <table class="shopping_list">
-                   <tbody>
-                      <tr>
-                         <th>Наименование</th>
-                         <th>Цена</th>
-                         <th>Кол-во</th>
-                      </tr>
-                      each zakaz in package.zakaz
-                        if zakaz[0] != ''
-                          <tr>
-                             <td> #{zakaz[0]}</td>
-                             <td>#{zakaz[1]}</td>
-                             <td>#{zakaz[2]}</td>
-                          </tr>
-                   </tbody>
-                </table>
+                if package.zakaz[0] != 'посылка'
+                  <table class="shopping_list">
+                     <tbody>
+                        <tr>
+                           <th>Наименование</th>
+                           <th>Цена</th>
+                           <th>Кол-во</th>
+                        </tr>
+                        each zakaz in package.zakaz
+                          if zakaz[0] != ''
+                            <tr>
+                               <td> #{zakaz[0]}</td>
+                               <td>#{zakaz[1]}</td>
+                               <td>#{zakaz[2]}</td>
+                            </tr>
+                     </tbody>
+                  </table>
+                else
+                  |посылка
               </details>
 
                 //- <p>#{package.zakaz[1][1]}</p>
@@ -50,4 +79,8 @@
     </div>
     //- <div class="money">Заработанно за неделю: <br> <h1>4096 руб.</h1></div>
     //- <div class="current">текущие заказы</div>
+</div>
+<div class="overlay" style="display: none;"></div>
+<div id="messenger" style="display: none;">
+  iframe(src="", frameborder="0")
 </div>

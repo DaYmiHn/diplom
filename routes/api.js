@@ -58,14 +58,48 @@ router.route('/tovar/:act')
 	          }
 	        });
 
-		} if (req.params.id == 'update'){
-			 // $value = mysqli_real_escape_string($connect, $_POST["value"]);
-			 // $query = "UPDATE user SET ".$_POST["column_name"]."='".$value."' WHERE id = '".$_POST["id"]."'";
-			 // if(mysqli_query($connect, $query))
-			 // {
-			 //  echo 'Data Updated';
-			 // }
+
+
+
+
+
+		} if (req.params.act == 'update'){
+			let col;
+			console.log(req.body.column);
+			switch (req.body.column) {
+			  case '1':
+			    col = 'name';
+			    break;
+			  case '2':
+			    col = 'cost';
+			    break;
+			}
+			let sql = `UPDATE 'product' SET '${col}' = '${req.body.value}' WHERE id = ${req.body.id_pac};`;
+	        db.run(sql, (err, row) => {
+				if (err) {
+					console.error(err.message);
+					// console.error(sql);
+				} else{
+					console.log(sql);
+					res.send(req.body.value); 
+				}
+	        });
+			// console.log(req.body);
 			
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
 		} if (req.params.id == 'delete'){
 			// $query = "DELETE FROM user WHERE id = '".$_POST["id"]."'";
 			//  if(mysqli_query($connect, $query))

@@ -54,7 +54,7 @@ var vm = new Vue({
                 phone: "+7",
                 email: "john.doe@gmail.com",
                 zakaz: "посылка",
-                address_A : 'Россия, Санкт-Петербург, Тихорецкий проспект, 1к2',
+                address_A : 'г Санкт-Петербург, пр-кт Авиаконструкторов, д 28',
                 address_B : 'Россия, Санкт-Петербург, Среднеохтинский проспект, 11к4',
                 ves : 1
                 
@@ -217,7 +217,8 @@ function initMap() {
     directionsService = new google.maps.DirectionsService;
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 14,
-      center: {lat: 37.77, lng: -122.447}
+      center: {lat: 37.77, lng: -122.447},
+      disableDefaultUI: true   
     });
     directionsRenderer.setMap(map);
     
@@ -244,7 +245,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             directionsRenderer.setDirections(response);
             console.log(response.routes[0].legs[0].distance.value/1000);
             console.log(response.routes[0].legs[0].duration.value/60);
-            // console.log(response.routes[0]);
+            $('#map').show();
             console.log(response.routes[0].fare.value);
 
             var rasKm = Math.round(response.routes[0].legs[0].distance.value/1000); //в метрах // км
@@ -263,7 +264,6 @@ var data;
     $("#address_a,#address_b").suggestions({
         token: "2a590f083f301abfa0b8b944b982bf15b2d5d5a6",
         type: "ADDRESS",
-        /* Вызывается, когда пользователь выбирает одну из подсказок */
         onSelect: function(suggestion) {
             data = suggestion;
             vm.model.address_A = $("#address_a").val();
@@ -272,13 +272,3 @@ var data;
             calculateAndDisplayRoute(directionsService, directionsRenderer);
         }
     });
-    // $("#address_b").suggestions({
-    //     token: "2a590f083f301abfa0b8b944b982bf15b2d5d5a6",
-    //     type: "ADDRESS",
-    //     /* Вызывается, когда пользователь выбирает одну из подсказок */
-    //     onSelect: function(suggestion) {
-    //         data = suggestion;
-    //         console.log(data);
-    //         calculateAndDisplayRoute(directionsService, directionsRenderer);
-    //     }
-    // });

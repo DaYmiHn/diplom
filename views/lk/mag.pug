@@ -1,23 +1,38 @@
 <input id="inp" type='file' style="display: none;">
+style.
+  #cart{
+    display: none;
+  }
+  #shop > div > div > div.tovars > div > input{
+  
+    display: none;
+  }
 <div class="cabinet_block">
     <div class="avatar" title="Выбрать изображение" style="background-image: url(#{user.avatar})">
     </div>
-    <div class="info"> <h1 contenteditable="true"> #{user.name}</h1>  </div>
-    <div class="settings">
+    <div class="info"> <h1 contenteditable="true">#{user.name}</h1>  </div>
+    <div class="settings" style="grid-template-rows: repeat(4, 1fr);">
         <input type="button" value="Выйти из профиля" onclick="exitUser()">
         <input type="button" class="open-modal-btn-tovar" value="Создать товар">
         <input type="button" class="open-modal-btn-acc" value="Изменить данные">
         <input type="button" class="open-modal-btn-edit" value="Изменить">
     </div>
-    <div class="money">Заработанно за неделю: <br> <h1>4096 руб.</h1></div>
+    <div class="massanger">
+      center
+        img(src="mail.svg", alt="", width="60px", height="60px")
+        <h3>Сообщения</h3>
+        <div id="circle"></div>
+    </div>
+    <div class="money">Заработанно за месяц: <br> <h3>44042 руб.</h3></div>
+    //- <div class="money">Заработанно за неделю: <br> <h1>4096 руб.</h1></div>
     <div class="zakaz"  id="moderate-mag"><h3>Доступные заказы</h3>
     each package in packages
         if package.shop == user.id && package.status == 'moderate'
             <div class="wrapperAcc">
-              <button class="accordionA">Заказ №#{package.id}<input type="button" value="Подтвердить" data-id="#{package.id}"  data-status="created-mag" class="updPackageStatus"></button>
+              <button class="accordionA">Заказ №#{package.id}<input type="button" value="Подтвердить" data-id="#{package.id}"  data-status="created-mag" class="updPackageStatus google_but"></button>
               <div class="panelA">
                 <p>#{package.fast} за <b> #{package.cost} руб.</b> посылку #{package.ves} кг.</p>
-                <p>От: #{package.address_B} в #{package.endTime}</p>
+                <p>До: #{package.address_B}</p>
                 if package.options[0] != 'undefined'
                   <details>
                     <summary>Опции</summary>
@@ -38,7 +53,7 @@
                       each zakaz in package.zakaz
                         if zakaz[0] != ''
                           <tr>
-                             <td> #{zakaz[0]}</td>
+                             <td>#{zakaz[0]}</td>
                              <td>#{zakaz[1]}</td>
                              <td>#{zakaz[2]}</td>
                           </tr>
@@ -50,7 +65,7 @@
               </div>
             </div>
     </div>
-    <div class="money">Заработанно за месяц: <br> <h1>44042 руб.</h1></div>
+    
     <div class="current"  id="created-mag"><h3>Текущие заказы</h3>
     each package in packages
         if package.shop == user.id && package.status == 'created'
@@ -84,7 +99,7 @@
 </div>
 
 
-block content
+
     style.
         @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
@@ -121,7 +136,7 @@ block content
           font-family: "Roboto", sans-serif;
           text-transform: uppercase;
           outline: 0;
-          background: #4CAF50;
+          background: #f18609;
           width: 100%;
           border: 0;
           padding: 15px;
@@ -146,16 +161,7 @@ block content
         .form .register-form {
           //- display: none;
         }
-        body {
-          background: #76b852; /* fallback for old browsers */
-          background: -webkit-linear-gradient(right, #76b852, #8DC26F);
-          background: -moz-linear-gradient(right, #76b852, #8DC26F);
-          background: -o-linear-gradient(right, #76b852, #8DC26F);
-          background: linear-gradient(to left, #76b852, #8DC26F);
-          font-family: "Roboto", sans-serif;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;      
-        }
+        
         a{
           cursor:pointer;
         }
@@ -174,13 +180,64 @@ block content
 <div class="register-form form modal-tovar" style="display: none;">
   <h1>Создать товар</h1>
     <input type="text" placeholder="Наименование"><br>
-    <input type="text" placeholder="Цена"><br>
+    <input type="text" placeholder="Цена (в руб.)"><br>
     <input type="text" placeholder="Изображение"><br>
     <button id="updMag">Создать</button>
     <input id="inp_tov" type='file' style="display: none;">
 </div>
 
+<div class="modal-tovar-edit" style="display: none;">
+  <h1>Изменить товары</h1>
+    //- <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="javascripts/jquery.dataTables.min.js"></script>
+    <script src="http://www.appelsiini.net/download/jquery.jeditable.mini.js"></script>
+    link(rel='stylesheet', href='/stylesheets/table.css')
 
+    
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Наименование</th>
+                <th>Цена</th>
+            </tr>
+        </thead>
+    </table>
+    script.
+        var dataSet = JSON.parse('!{edit}'.replace(/&quot;/g,'"'));;
+        var table;
+        $(document).ready(function() {
+             table = $('#example').DataTable( {
+            columns: [
+                { data: 'id' },
+                { data: 'name' },
+                { data: 'cost' }
+            ]
+        } );
+            // console.log(table.data());
+            table.rows.add(dataSet);
+            table.draw();
+            table.$('td:not(:first-child)').editable( 'http://localhost:8081/api/tovar/update', {
+                "callback": function( sValue, y ) {
+                    var aPos = table.cell( this ).index();
+                    //- table.fnUpdate( sValue, aPos.row, aPos.column );
+                    table.cell(this).data(sValue).draw();
+                },
+                "submitdata": function ( value, settings ) {
+                    var pos = table.cell( this ).index();
+                    return {
+                        "column": table.column(this).index(),
+                        "id_pac": table.cell(pos.row, 0).data()
+                    };
+                },
+                "height": "14px",
+                "width": "100%"
+            } );
+        } );
+</div>
 //- <div class="register-form form modal-edit" style="display: none;">
 //-   include editTovar
 //- </div>
+<div id="messenger" style="display: none;">
+  iframe(src="", frameborder="0")
+</div>
