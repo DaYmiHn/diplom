@@ -1,5 +1,6 @@
 var sqlite3 = require('sqlite3');
 var db = new sqlite3.Database('database.db');
+var md5 = require('md5');
 
 var id;
 module.exports = {
@@ -18,7 +19,7 @@ module.exports = {
   },
   getTrue: function (req, res) {
   	// console.log(`SELECT * FROM user WHERE log = '${req.query.log}' AND pas = '${req.query.pas}'`);
-    db.each(`SELECT * FROM user WHERE log = '${req.query.log}' AND pas = '${req.query.pas}'`, function(err, row) {
+    db.each(`SELECT * FROM user WHERE log = '${req.query.log}' AND pas = '${md5(req.query.pas)}'`, function(err, row) {
 		res.cookie('auth', 'true' );
 		res.cookie('id',  row.id);
 		res.send('done');
@@ -30,8 +31,8 @@ module.exports = {
 	});
   },
   newUser: function (req, res) {
-    console.log(`INSERT INTO 'user' (log,pas,email,name) VALUES ('${req.body.log}','${req.body.pas}','${req.body.email}','${req.body.name}');`);
-		db.run(`INSERT INTO 'user' (log,pas,email,name,status) VALUES ('${req.body.log}','${req.body.pas}','${req.body.email}','${req.body.name}','${req.body.stat}');`, function(err, row) {
+    // console.log(`INSERT INTO 'user' (log,pas,email,name) VALUES ('${req.body.log}','${req.body.pas}','${req.body.email}','${req.body.name}');`);
+		db.run(`INSERT INTO 'user' (log,pas,email,name,status) VALUES ('${req.body.log}','${md5(req.body.pas)}','${req.body.email}','${req.body.name}','${req.body.stat}');`, function(err, row) {
 	  			if (!err){
 	  				db.each(`SELECT * FROM user WHERE log = '${req.body.log}'`, function(err, row) {
 				    	if (!err) {
@@ -42,7 +43,10 @@ module.exports = {
 					});
 	  				
 	  			}
-				else res.send('nope');
+				else {
+					console.log(err);
+				res.send('nope');
+				}
 			});
   }
 };

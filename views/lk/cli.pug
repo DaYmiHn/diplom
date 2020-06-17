@@ -1,28 +1,32 @@
 <input id="inp" type='file' style="display: none;">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 <div class="cabinet_block">
     <div class="avatar" title="Выбрать изображение" style="background-image: url(#{user.avatar})">
     </div>
-    <div class="info"> <h1 contenteditable="true">#{user.name}</h1></div>
+    <div class="info"> <h1 contenteditable="true" class="inp2">#{user.name}</h1></div>
     <div class="settings" style="grid-template-rows: repeat(1, 1fr);">
         <input type="button" value="Выйти из профиля" onclick="exitUser()">
         //- <input type="button" value="Написать в поддержку">
         //- <input type="button" value="Кнопка">
     </div>
+    <p style="display:none"><a href="#finish" rel="modal:open" id="finish_modal">Open Modal</a></p>
     <div class="massanger">
       center
         img(src="mail.svg", alt="", width="60px", height="60px")
         <h3>Почта</h3>
         <div id="circle"></div>
     </div>
-    <div class="money overflow">Это просто пустой<h3 style="margin-top: 7px;">блок</h3></div>
+    //- <div class="money overflow">Это просто пустой<h3 style="margin-top: 7px;">блок</h3></div>
+    <div class="money overflow"></div>
     <div class="zakaz" style="grid-row: 5 span;"><h3>История заказов:</h3>
     each package in packages
         if package.name == user.name && package.status != 'finished' 
             <div class="wrapperAcc">
               <button class="accordionA">Заказ №#{package.id}
-              <input type="button" data-id="#{package.id}" value="Открыть диспут" class="openDisput google_but " style="cursor:pointer;">
               
               if package.status == 'done'
+                <input type="button" data-id="#{package.id}" value="Открыть диспут" class="openDisput google_but " style="cursor:pointer;">
                 <input type="button" data-id="#{package.id}" value="Завершить?"   class="donePackage google_but " title="Если вы получили заказ в целости и сохранности то нажмите на эту кнопку, подтверждая что вы удовлетворенны нашим сервисом, либо откройте диспут" style="cursor:pointer;">
               if package.status == 'inwork'
                 <input type="button" value="Передано курьеру"  class="updPackageStatus google_but ">
@@ -84,3 +88,20 @@
 <div id="messenger" style="display: none;">
   iframe(src="", frameborder="0")
 </div>
+
+<div id="finish" class="modal">
+  center
+    <h4>Оцените, пожалуйста, работу курьера и магазина, тем самым подтвердив завершение заказа </h4>
+    <div id="star-rating" style="margin-left: 170px;">
+      <input type="radio" name="example" class="rating" value="1" />
+      <input type="radio" name="example" class="rating" value="2" />
+      <input type="radio" name="example" class="rating" value="3" />
+      <input type="radio" name="example" class="rating" value="4" />
+      <input type="radio" name="example" class="rating" value="5" />
+    </div>
+</div>
+
+script.
+  $(document.body).on("DOMSubtreeModified", ".inp2", function(e) {
+    vm.model.name = $(this).text()
+  });

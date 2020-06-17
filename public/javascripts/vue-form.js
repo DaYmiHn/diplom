@@ -245,6 +245,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             directionsRenderer.setDirections(response);
             console.log(response.routes[0].legs[0].distance.value/1000);
             console.log(response.routes[0].legs[0].duration.value/60);
+            // $('#map').slideDown( 200);
             $('#map').show();
             console.log(response.routes[0].fare.value);
 

@@ -231,15 +231,21 @@ socket.on('new disput', function(data, callback) {
 
 
 socket.on('finish package', function(data, callback) {
-  let sql = `UPDATE 'package' SET status = 'finished' WHERE id = ${data.id};`;
+  //
+  let sql = `UPDATE 'package' SET status = 'finished', rating = ${data.vote} WHERE id = ${data.id};`;
   db.run(sql, (err, row) => {
-    if (err) {
-      console.error(err.message );
-      console.error(sql);
-    } else{
-      console.log('Done');
-      callback();
-    }
+    let sql = `UPDATE 'user' SET rating = (select avg(rating) from package where shop = (select shop from package where id = ${data.id})) WHERE id = (select shop from package where id = ${data.id});`;
+    db.run(sql, (err, row) => {
+      if (err) {
+        console.error(err.message );
+        console.error(sql);
+      } else{
+        console.log(sql);
+
+        console.log('Done');
+        callback();
+      }
+    });
   });
   // socket.emit('reload');
 });

@@ -1,0 +1,90 @@
+.grid > * { box-sizing: border-box; }
+
+.grid { font-family: sans-serif; }
+
+/* ---- grid ---- */
+
+.grid {
+  background: #EEE;
+  max-width: 1200px;
+}
+
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ---- grid-item ---- */
+
+.grid-item {
+  width: 160px;
+  height: 160px;
+  float: left;
+  background: #D26;
+  border: 2px solid #333;
+  border-color: hsla(0, 0%, 0%, 0.5);
+  border-radius: 5px;
+  margin-bottom: 5px;
+  position: relative;
+  
+}
+.grid-item:not(.grid-item--gigante) {
+  cursor: pointer;
+}
+.grid-item--width2 { width: 320px; }
+.grid-item--width3 { width: 480px; }
+.grid-item--width4 { width: 640px; }
+
+.grid-item--height2 { height: 200px; }
+.grid-item--height3 { height: 260px; }
+.grid-item--height4 { height: 360px; }
+
+
+.grid-item--gigante {
+  width: 100%;
+  height: 360px;
+  background: #F90;
+  z-index: 2; /* abover other items */
+}
+
+
+.close{
+  background-image: url(https://img.icons8.com/ios/50/000000/close-window.png);
+  background-size: 30px 30px;
+  float: right;
+  display: none;
+  width: 30px; height: 30px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.grid-content{
+  margin-top: 20px;
+  display: none;
+  padding: 10px; 
+  overflow-y: scroll; 
+}
+.grid-content::-webkit-scrollbar { width: 2px; }
+
+
+.img-content{
+  width: 160px;
+  height: 160px;
+  margin: 10px;
+  float: left;
+  border-radius: 10px;
+}
+
+.name{
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  background-color: #ffffff44;
+}
+
+summary{
+  outline:none;
+}

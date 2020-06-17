@@ -3,10 +3,14 @@ style.
   #cart{
     display: none;
   }
-  #shop > div > div > div.tovars > div > input{
+  //- #shop > div > div > div.tovars > div > input{
   
-    display: none;
-  }
+  //-   display: none;
+  //- }
+script.
+  $('#shop > div > div > div.tovars > div > input').each(function(){
+    $(this).val($(this).val().split("Купить за ")[1])
+  });
 <div class="cabinet_block">
     <div class="avatar" title="Выбрать изображение" style="background-image: url(#{user.avatar})">
     </div>
@@ -23,7 +27,7 @@ style.
         <h3>Сообщения</h3>
         <div id="circle"></div>
     </div>
-    <div class="money">Заработанно за месяц: <br> <h3>44042 руб.</h3></div>
+    <div class="money"></div>
     //- <div class="money">Заработанно за неделю: <br> <h1>4096 руб.</h1></div>
     <div class="zakaz"  id="moderate-mag"><h3>Доступные заказы</h3>
     each package in packages

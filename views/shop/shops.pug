@@ -1,7 +1,10 @@
 each shop in shops
 	<div class="block_shop_item overflow">
 	<img class="ava" src="#{shop.avatar}"  alt="" style="background: #F1F1FA;">
-	<div class="name"><b>#{shop.name}</b></div>
+	if shop.rating
+		<div class="name"><b>#{shop.name}</b>          Оценка пользователей: <b>#{shop.rating}</b></div>
+	else
+		<div class="name"><b>#{shop.name}</b>          Оценка пользователей: <b>пока нет оценок</b></div>
 	<div class="tovars ">
 		each product in products
 			if product.mag == shop.id

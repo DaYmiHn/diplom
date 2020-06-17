@@ -37,7 +37,12 @@ router.get('/', function(req, res, next) {
             edit = row;
             
           });
-
+          var categorys = [];
+          db.each(`SELECT distinct category, mag FROM product `, (err, row )=> {
+            if(err) throw err;
+            // console.log(row);
+            categorys.push(row);    
+          });
 
 
 
@@ -45,7 +50,7 @@ router.get('/', function(req, res, next) {
           // console.log(products);
           db.each(`SELECT * FROM user WHERE id = '${req.cookies['id']}'`, function(err, row) {
             // console.log(shops.products);
-            res.render('index', { auth: 'true', shops: data, products: products, user: row, packages: packages, edit:JSON.stringify(edit)});
+            res.render('index', { auth: 'true', shops: data, products: products, user: row, packages: packages, edit:JSON.stringify(edit), categorys: categorys});
             // delete shops;
           });
       });
@@ -53,9 +58,6 @@ router.get('/', function(req, res, next) {
   	} else {
   		res.render('auth', { auth: 'false' });
   	}
-});
-router.get('/reg/:name', function(req, res, next) {
-  	res.render('index', { name: req.params['name'] });
 });
 
 
